@@ -1,29 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parse.h                                            :+:      :+:    :+:   */
+/*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aaferyad <aaferyad@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/26 12:00:04 by aaferyad          #+#    #+#             */
-/*   Updated: 2025/09/29 12:09:35 by aaferyad         ###   ########.fr       */
+/*   Created: 2025/09/29 12:00:55 by aaferyad          #+#    #+#             */
+/*   Updated: 2025/09/29 13:06:55 by aaferyad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PARSE_H
-# define PARSE_H
+#ifndef CUB3D_H
+# define CUB3D_H
 
-# include <unistd.h>
-# include <stdio.h>
-# include <stdlib.h>
 # include <libft.h>
-# include <fcntl.h>
+# include <unistd.h>
+# include <mlx.h>
+# include <stdlib.h>
 
-typedef struct s_parsing_struct
+# define W_WIDTH 1500
+# define W_HEIGHT 1000
+typedef struct s_game_struct
 {
 	char	*map;
-}	t_parse;
+	void	*mlx;
+	void	*window;
+	void	*image;
 
-char	*parse(char *file);
+} t_game;
 
 #endif

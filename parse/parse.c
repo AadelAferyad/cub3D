@@ -6,7 +6,7 @@
 /*   By: aaferyad <aaferyad@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/26 12:02:46 by aaferyad          #+#    #+#             */
-/*   Updated: 2025/09/29 11:50:39 by aaferyad         ###   ########.fr       */
+/*   Updated: 2025/09/29 12:09:49 by aaferyad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,18 +55,17 @@ char	*read_map(int fd)
 	return (buffer);
 }
 
-t_parse	*parse(char *map)
+char	*parse(char *file)
 {
-	t_parse	*ts;
+	char	*map;
 	int	fd;
 
-	if (check_map_extension(map))
+	if (check_map_extension(file))
 	{
 		printf("Error invalid map");
 		exit(1); //TODO print wrong extension 
 	}
-	fd = open_file(map);
-	ts = malloc(sizeof(t_parse));
-	ts->map = read_map(fd);
-	return (ts);
+	fd = open_file(file);
+	map = read_map(fd);
+	return (map);
 }
