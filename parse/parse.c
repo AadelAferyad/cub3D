@@ -6,16 +6,67 @@
 /*   By: aaferyad <aaferyad@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/26 12:02:46 by aaferyad          #+#    #+#             */
-/*   Updated: 2025/09/26 12:24:36 by aaferyad         ###   ########.fr       */
+/*   Updated: 2025/09/29 11:50:39 by aaferyad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <parse.h>
-#include <stdio.h>
+#include <get_next_line.h>
 
-int	parse(char *map)
+int	check_map_extension(char *map)
 {
-	(void)* map;
-	printf("testing makefile and includes");
+	char	*buff;
+
+	if (!map)
+		exit(1);//TODO print error msg
+	buff = ft_strrchr(map, '.');
+	if (!buff || *buff != '.')
+		return (1);
+	if (ft_strncmp(buff, ".cub", 4))
+		return (1);
 	return (0);
+}
+
+int	open_file(char *map)
+{
+	int	fd;
+
+	fd = open(map, O_RDONLY);
+	if (fd == -1)
+		exit(122); //TODO can't open a file
+	return (fd);
+}
+
+char	*read_map(int fd)
+{
+	char	*temp;
+	char	*buffer;
+
+	buffer = NULL;	
+	temp = get_next_line(fd);
+	while (temp)
+	{
+		buffer = ft_strjoin_gnl(buffer, temp);
+		free(temp);
+		if (!buffer)
+			exit(1); //TODO error msg and free !
+		temp = get_next_line(fd);
+	}
+	return (buffer);
+}
+
+t_parse	*parse(char *map)
+{
+	t_parse	*ts;
+	int	fd;
+
+	if (check_map_extension(map))
+	{
+		printf("Error invalid map");
+		exit(1); //TODO print wrong extension 
+	}
+	fd = open_file(map);
+	ts = malloc(sizeof(t_parse));
+	ts->map = read_map(fd);
+	return (ts);
 }

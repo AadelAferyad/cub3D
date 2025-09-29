@@ -11,4 +11,6 @@ all: $(NAME)
 
 $(NAME):
 	make -C libft
-	$(CC) main.c parse/parse.c  $(FLAGS) libft/libft.a -o $(NAME)
+	$(CC) main.c gnl/get_next_line.c gnl/get_next_line_utils.c parse/parse.c $(FLAGS) libft/libft.a -o $(NAME)
+fclean:
+	rm -rf cub3d

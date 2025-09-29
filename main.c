@@ -6,7 +6,7 @@
 /*   By: aaferyad <aaferyad@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/26 11:45:58 by aaferyad          #+#    #+#             */
-/*   Updated: 2025/09/26 12:22:23 by aaferyad         ###   ########.fr       */
+/*   Updated: 2025/09/29 11:48:13 by aaferyad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,21 @@
 #include <stdio.h>
 
 
-int	main(void)
+static void	print_map(char *map) //DEBUG function
+{
+	printf("%s", map);
+}
+int	main(int ac, char **av)
 {
 	void	*mlx;
+	t_parse	*map;
 
+	if (ac != 2)
+		return (0); /*IMPLEMENT LATTER print usage or return error*/
+	map = parse(av[1]);
+	print_map(map->map);
 	mlx = mlx_init();
 	if (!mlx)
 		return (1);
-	parse("dsada");
 	return (0);
 }
