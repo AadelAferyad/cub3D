@@ -18,8 +18,9 @@
 # include <mlx.h>
 # include <stdlib.h>
 
-# define W_WIDTH 1500
-# define W_HEIGHT 1000
+# define W_WIDTH 1900
+# define W_HEIGHT 1800
+# define SCALE 40
 
 typedef struct s_image_info
 {

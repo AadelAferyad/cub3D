@@ -37,12 +37,12 @@ void	create_put_image(t_game *game, int x, int y, int color)
 	i = 0;
 	j = 0;
 	printf("x : %d y : %d\n", x, y);
-	while (j < 50)
+	while (j < SCALE)
 	{
 		i = 0;
-		while (i < 50)
+		while (i < SCALE)
 		{
-			pixel = (y * 50 + j) * (game->img->size_line) + (x * 50 + i) * (game->img->bites_per_pixel / 8);
+			pixel = (y * SCALE + j) * (game->img->size_line) + (x * SCALE + i) * (game->img->bites_per_pixel / 8);
 			*(unsigned int *) (game->img->buff + pixel) = color; 
 			i++;
 		}
@@ -69,6 +69,8 @@ void	draw_map(t_game *game)
 				create_put_image(game, x, y, 0x00FFFF);
 			else if (game->map[y][x] == '0')
 				create_put_image(game, x, y, 0xFFFFFF);
+			else if (ft_strchr("NEWS", game->map[y][x]))
+				create_put_image()
 			x++;
 		}
 		y++;
