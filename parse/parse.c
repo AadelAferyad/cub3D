@@ -55,9 +55,10 @@ char	*read_map(int fd)
 	return (buffer);
 }
 
-char	*parse(char *file)
+char	**parse(char *file)
 {
-	char	*map;
+	char	*buff;
+	char	**map;
 	int	fd;
 
 	if (check_map_extension(file))
@@ -66,6 +67,7 @@ char	*parse(char *file)
 		exit(1); //TODO print wrong extension 
 	}
 	fd = open_file(file);
-	map = read_map(fd);
+	buff = read_map(fd);
+	map = ft_split(buff, '\n');
 	return (map);
 }

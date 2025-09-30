@@ -24,6 +24,6 @@ typedef struct s_parsing_struct
 	char	*map;
 }	t_parse;
 
-char	*parse(char *file);
+char	**parse(char *file);
 
 #endif

@@ -20,12 +20,22 @@
 
 # define W_WIDTH 1500
 # define W_HEIGHT 1000
+
+typedef struct s_image_info
+{
+	void	*image;
+	char	*buff;
+	int	bites_per_pixel;
+	int	size_line;
+	int	endian;
+} t_image;
+
 typedef struct s_game_struct
 {
-	char	*map;
+	char	**map;
 	void	*mlx;
 	void	*window;
-	void	*image;
+	t_image	*img;
 
 } t_game;
 
