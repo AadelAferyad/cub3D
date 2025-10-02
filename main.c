@@ -12,6 +12,7 @@
 
 #include <parse.h>
 #include <cub3d.h>
+#include <math.h>
 #include <stdio.h>
 
 
@@ -72,8 +73,8 @@ void	draw_map(t_game *game)
 			else if (ft_strchr("NEWS", game->map[y][x]))
 			{
 				create_put_image(game, x, y, 0xFD01E1);
-				game->pos.x = x;
-				game->pos.y = y;
+				game->player.x = x;
+				game->player.y = y;
 			}
 			x++;
 		}
@@ -88,11 +89,11 @@ void	move_mini_player(t_game *game, int x, int y)
 {
 	if (game->map[y][x] == '1')
 		return ;
-	create_put_image(game, game->pos.x, game->pos.y, 0xFFFFFF);
+	create_put_image(game, game->player.x, game->player.y, 0xFFFFFF);
 	create_put_image(game, x, y, 0xFD01E1);
 	mlx_put_image_to_window(game->mlx, game->window, game->img->image, 0, 0);
-	game->pos.x = x;
-	game->pos.y = y;
+	game->player.x = x;
+	game->player.y = y;
 }
 
 int	key_pressed(int key_code, t_game *game)
@@ -100,8 +101,8 @@ int	key_pressed(int key_code, t_game *game)
 	int	x;
 	int	y;
 
-	x = game->pos.x;
-	y = game->pos.y;
+	x = game->player.x;
+	y = game->player.y;
 	printf("Key pressed : %d\n", key_code);
 	if (key_code == ESC)
 	{
@@ -111,13 +112,24 @@ int	key_pressed(int key_code, t_game *game)
 		exit(1);
 	}
 	if (key_code == UP)
-		y--;
+	{
+		x += cos(game->player.a) * 1;
+		y += sin(game->player.a) * 1;
+	}
 	else if (key_code == DOWN)
-		y++;
+	{
+		x -= cos(game->player.a) * 1;
+		y -= sin(game->player.a) * 1;
+	}
 	else if (key_code == RIGHT)
-		x++;
+	{
+		game->player.a += 1;
+	}
 	else if (key_code == LEFT)
-		x--;
+	{
+		game->player.a -= 1; // ROTATION SPEED
+	}
+	printf("cords: x %d y %d\n", x, y);
 	move_mini_player(game, x, y);
 	return (0);
 }
@@ -128,6 +140,7 @@ void	init_game(t_game *game)
 	if (!game->mlx)
 		exit(1); //TODO free and print error of mlx failure 
 	game->window = mlx_new_window(game->mlx, W_WIDTH, W_HEIGHT, "cub3d");
+	game->player.a = 0;
 	draw_map(game);
 	mlx_hook(game->window, 2, 3, key_pressed, game);
 	mlx_loop(game->mlx);

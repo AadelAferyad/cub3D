@@ -20,7 +20,7 @@
 
 # define W_WIDTH 1900
 # define W_HEIGHT 1800
-# define SCALE 40
+# define SCALE 20
 
 
 # define UP 119
@@ -30,11 +30,12 @@
 # define ESC 65307
 
 
-typedef struct s_game_coordinates
+typedef struct s_player_info
 {
 	int	x;
 	int	y;
-} t_cord;
+	int	a;
+} t_player;
 
 typedef struct s_image_info
 {
@@ -51,7 +52,7 @@ typedef struct s_game_struct
 	void	*mlx;
 	void	*window;
 	t_image	*img;
-	t_cord	pos;
+	t_player	player;
 
 
 } t_game;
