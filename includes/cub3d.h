@@ -22,9 +22,9 @@
 #include <parse.h>
 #include <math.h>
 
-# define W_WIDTH 1000
+# define W_WIDTH 900
 # define W_HEIGHT 800
-# define SCALE 60
+# define MINIMAP_SIZE 8
 # define UP 119
 # define DOWN 115
 # define RIGHT 100
@@ -86,6 +86,6 @@ typedef struct s_game_struct
 
 
 } t_game;
-void	draw_map(t_game *game);
 
+void	minimap(t_game *game);
 #endif

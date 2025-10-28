@@ -129,6 +129,7 @@ void	player_pos(t_game *game)
 			{
 				game->player.x = x;
 				game->player.y = y;
+				game->map[y][x] = '0';
 				return ;
 			}
 			x++;
@@ -153,7 +154,6 @@ void	init_game(t_game *game)
 	game->img->buff = mlx_get_data_addr(game->img->image, &game->img->bites_per_pixel, &game->img->size_line, &game->img->endian);
 	player_pos(game);
 	cast_rays(game);
-	/*draw_map(game);*/
 	mlx_hook(game->window, 2, 3, key_pressed, game);
 	mlx_loop(game->mlx);
 }

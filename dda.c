@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 # include <dda.h>
+# include <cub3d.h>
 
 void	init_dda(t_game *game, double ray_dir_x, double ray_dir_y)
 {
@@ -160,5 +161,6 @@ void	cast_rays(t_game *game)
 		wall_height(game, x);
 		x++;
 	}
+	minimap(game);
 	mlx_put_image_to_window(game->mlx, game->window, game->img->image, 0, 0);
 }

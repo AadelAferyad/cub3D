@@ -17,5 +17,6 @@
 
 /*void	init_dda(t_game *game);*/
 void	cast_rays(t_game *game);
+void	put_mlx_pixel(t_image *img, int x, int y, int color);
 
 #endif
