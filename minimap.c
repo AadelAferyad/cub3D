@@ -15,8 +15,8 @@
 
 void draw_player_on_minimap(t_game *game)
 {
-    int px = game->player.x * MINIMAP_SIZE;
-    int py = game->player.y * 5;
+    int px = game->player.pos.x * MINIMAP_SIZE;
+    int py = game->player.pos.y * 5;
 
     for (int j = -2; j <= 4; j++)
         for (int i = -2; i <= 4; i++)

@@ -13,7 +13,6 @@
 #include <cub3d.h>
 #include <dda.h>
 
-
 static void	print_map(char **map) //DEBUG function
 {
 	int	i;
@@ -29,13 +28,11 @@ static void	print_map(char **map) //DEBUG function
 
 int	key_pressed(int key_code, t_game *game)
 {
-	double	x;
-	double	y;
-	double	old_dir;	
+	t_vec2	pos;
+	double	old_dir;
 	double	old_plane;	
 	
-	x = game->player.x;
-	y = game->player.y;
+	vec_copy(&pos, game->player.pos);
 	if (key_code == ESC)
 	{
 		mlx_destroy_image(game->mlx, game->img->image);
@@ -45,71 +42,35 @@ int	key_pressed(int key_code, t_game *game)
 	}
 	if (key_code == UP)
 	{
-		x = game->player.x + game->player.dir_x * MOVE_SPEED;
-		y = game->player.y + game->player.dir_y * MOVE_SPEED;
-		/*if (game->map[(int)x][(int)game->player.y]!= '1')*/
-		/*	game->player.x = x;*/
-		/*if (game->map[(int)game->player.x][(int)y]!= '1')*/
-		/*	game->player.y = y;*/
-
-		if (game->map[(int)game->player.y][(int)x] != '1')
-			game->player.x = x;
-		if (game->map[(int)y][(int)game->player.x] != '1')
-			game->player.y = y;
-		printf("x: %d y: %d map : %c\n", (int)x, (int)y, game->map[(int)y][(int)x]);
-
-		/*if (game->map[(int)(game->player.x + game->player.dir_x * MOVE_SPEED)][(int)(game->player.y)] != '1')*/
-		/*	game->player.x += game->player.dir_x * MOVE_SPEED;*/
-		/*if (game->map[(int)(game->player.x)][(int)(game->player.y + game->player.dir_y * MOVE_SPEED)] != '1')*/
-		/*	game->player.y += game->player.dir_y * MOVE_SPEED;*/
+		pos = vec_add(game->player.pos, vec_scale(game->player.dir, MOVE_SPEED));
+		if (game->map[(int)game->player.pos.y][(int)pos.x] != '1')
+			game->player.pos.x = pos.x;
+		if (game->map[(int)pos.y][(int)game->player.pos.x] != '1')
+			game->player.pos.y = pos.y;
 	}
 	else if (key_code == DOWN)
 	{ 
-		x = game->player.x - game->player.dir_x * MOVE_SPEED;
-		y = game->player.y - game->player.dir_y * MOVE_SPEED;
-		if (game->map[(int)game->player.y][(int)x] != '1')
-			game->player.x = x;
-		if (game->map[(int)y][(int)game->player.x] != '1')
-			game->player.y = y;
-		printf("x: %d y: %d map : %c\n", (int)x, (int)y, game->map[(int)y][(int)x]);
-		/*if (game->map[(int)(game->player.x - game->player.dir_x * MOVE_SPEED)][(int)(game->player.y)] != '1')*/
-		/*	game->player.x -= game->player.dir_x * MOVE_SPEED;*/
-		/*if (game->map[(int)(game->player.x)][(int)(game->player.y - game->player.dir_y * MOVE_SPEED)] != '1')*/
-		/*	game->player.y -= game->player.dir_y * MOVE_SPEED;*/
+		pos = vec_sub(game->player.pos, vec_scale(game->player.dir, MOVE_SPEED));
+		if (game->map[(int)game->player.pos.y][(int)pos.x] != '1')
+			game->player.pos.x = pos.x;
+		if (game->map[(int)pos.y][(int)game->player.pos.x] != '1')
+			game->player.pos.y = pos.y;
 	}
 	else if (key_code == LEFT)
 	{
-		old_dir = game->player.dir_x;
-		game->player.dir_x = game->player.dir_x * cos(ROTATION) - game->player.dir_y * sin(ROTATION);
-		game->player.dir_y = old_dir * sin(ROTATION) + game->player.dir_y * cos(ROTATION);
-
-		old_plane = game->player.plane_x;
-		game->player.plane_x = game->player.plane_x * cos(ROTATION) - game->player.plane_y * sin(ROTATION);
-		game->player.plane_y = old_plane * sin(ROTATION) + game->player.plane_y * cos(ROTATION);
+		game->player.dir = vec_rotate(game->player.dir, ROTATION);
+		game->player.plane = vec_rotate(game->player.plane, ROTATION);
 	}
 	else if (key_code == RIGHT)
 	{
-
-		old_dir = game->player.dir_x;
-		game->player.dir_x = game->player.dir_x * cos(-ROTATION) - game->player.dir_y * sin(-ROTATION);
-		game->player.dir_y = old_dir * sin(-ROTATION) + game->player.dir_y * cos(-ROTATION);
-
-		old_plane = game->player.plane_x;
-		game->player.plane_x = game->player.plane_x * cos(-ROTATION) - game->player.plane_y * sin(-ROTATION);
-		game->player.plane_y = old_plane * sin(-ROTATION) + game->player.plane_y * cos(-ROTATION);
+		game->player.dir = vec_rotate(game->player.dir, -ROTATION);
+		game->player.plane = vec_rotate(game->player.plane, -ROTATION);
 	}
-	if (game->player.x >= W_HEIGHT || game->player.x >= W_WIDTH) 
-	{
-		game->player.x = W_WIDTH - 1;
-		game->player.y = W_HEIGHT - 1;
-	}
-
-	if (game->player.y <= 0 || game->player.y <= 0)
-	{
-		printf("True\n");
-		game->player.x = 0;
-		game->player.y = 0;
-	}
+	// not sure below can i remove it ?
+	/*if (game->player.x >= W_HEIGHT || game->player.x >= W_WIDTH) */
+	/*	vec_update(&game->player.pos, W_WIDTH - 1, W_HEIGHT - 1);*/
+	/*if (game->player.y <= 0 || game->player.y <= 0)*/
+	/*	vec_update(&game->player.pos, 0, 0);*/
 	cast_rays(game);
 	return (0);
 }
@@ -127,8 +88,7 @@ void	player_pos(t_game *game)
 		{
 			if (ft_strchr("NEWS", game->map[y][x]))
 			{
-				game->player.x = x;
-				game->player.y = y;
+				game->player.pos = vec_init(x, y);
 				game->map[y][x] = '0';
 				return ;
 			}
@@ -145,10 +105,8 @@ void	init_game(t_game *game)
 		exit(1); //TODO free and print error of mlx failure 
 	game->window = mlx_new_window(game->mlx, W_WIDTH, W_HEIGHT, "cub3d");
 	game->player.a = 0;
-	game->player.dir_x = -1;
-	game->player.dir_y = 0;
-	game->player.plane_x = 0;
-	game->player.plane_y = 0.66;
+	game->player.dir = vec_init(-1, 0);
+	game->player.plane = vec_init(0, 0.66);
 	game->img = malloc(sizeof(t_image)); //TODO protect malloc and FREE!!!
 	game->img->image = mlx_new_image(game->mlx, W_WIDTH, W_HEIGHT);
 	game->img->buff = mlx_get_data_addr(game->img->image, &game->img->bites_per_pixel, &game->img->size_line, &game->img->endian);

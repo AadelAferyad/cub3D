@@ -6,7 +6,7 @@
 /*   By: aaferyad <aaferyad@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/29 12:00:55 by aaferyad          #+#    #+#             */
-/*   Updated: 2025/10/27 14:35:22 by aaferyad         ###   ########.fr       */
+/*   Updated: 2025/11/03 10:26:21 by aaferyad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 
 #include <parse.h>
 #include <math.h>
+#include <vec2d.h>
 
 # define W_WIDTH 900
 # define W_HEIGHT 800
@@ -39,16 +40,14 @@
 # define GREEN 0x008000
 # define YELLOW 0xFFFF00
 # define FLOOR 0x964B00
+# define BLACK 0x000000
 
 typedef struct s_player_info
 {
-	double	x;
-	double	y;
+	t_vec2	pos;
 	double	a;
-	double	dir_x;
-	double	dir_y;
-	double	plane_x;
-	double	plane_y;
+	t_vec2	dir;
+	t_vec2	plane;
 } t_player;
 
 typedef struct s_image_info
@@ -62,15 +61,11 @@ typedef struct s_image_info
 
 typedef struct	s_dda_algo
 {
-	int	map_x;
-	int	map_y;
-	double	side_dist_x;
-	double	side_dist_y;
-	double	delta_dest_x;
-	double	delta_dest_y;
+	t_vec2	map;
+	t_vec2	side_dest;
+	t_vec2	delta_dest;
 	double	perp_wall_dist;
-	int	step_x;
-	int	step_y;
+	t_vec2	step;
 	int	hit;
 	int	side;
 } t_dda;
@@ -88,4 +83,6 @@ typedef struct s_game_struct
 } t_game;
 
 void	minimap(t_game *game);
+void	*mlx_file_to_image(void *mlx, char *str);
+void	draw_texures(t_game *game, void *img , int x, int draw_start, int draw_end);
 #endif

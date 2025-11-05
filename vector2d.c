@@ -13,6 +13,27 @@
 #include <vec2d.h>
 #include <stdio.h>
 
+void	vec_update(t_vec2 *v, double a, double b)
+{
+	v->x = a;
+	v->y = b;
+}
+
+void	vec_copy(t_vec2 *v1, t_vec2 v2)
+{
+	v1->x = v2.x;
+	v1->y = v2.y;
+}
+
+t_vec2	vec_init(double x, double y)
+{
+	t_vec2	c;
+
+	c.x = x;
+	c.y = y;
+	return (c);
+}
+
 t_vec2	vec_add(t_vec2 a, t_vec2 b)
 {
 	t_vec2	c;
@@ -45,7 +66,7 @@ double	vec_dot(t_vec2 a, t_vec2 b)
 	return (a.x * b.x + a.y * b.y);
 }
 
-double	vec_lenghth(t_vec2 v);
+double	vec_lenghth(t_vec2 v)
 {
 	return (sqrt(v.x * v.x + v.y * v.y));
 }
@@ -72,17 +93,4 @@ t_vec2	vec_rotate(t_vec2 v, double angle)
 	c.x = v.x * cos(angle) - v.y * sin(angle);
 	c.y = v.x * sin(angle) + v.y * cos(angle);
 	return (c);
-}
-
-int	main()
-{
-	t_vec2	a;
-	t_vec2	c;
-	t_vec2	b = {1, 2};
-
-	a.x = 1;
-	a.y = 2;
-	c = vec_add(a, b);
-	printf("%f\n%f", c.x, c.y);
-	return (0);
 }

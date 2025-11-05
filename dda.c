@@ -6,74 +6,78 @@
 /*   By: aaferyad <aaferyad@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/27 11:41:46 by aaferyad          #+#    #+#             */
-/*   Updated: 2025/10/27 16:08:04 by aaferyad         ###   ########.fr       */
+/*   Updated: 2025/11/03 10:27:01 by aaferyad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include <dda.h>
 # include <cub3d.h>
 
-void	init_dda(t_game *game, double ray_dir_x, double ray_dir_y)
+void	init_dda(t_game *game, t_vec2 ray)
 {
-	game->dda.map_x = (int) game->player.x;
-	game->dda.map_y = (int) game->player.y;
-	game->dda.delta_dest_x = ray_dir_x == 0 ? 1e30 : fabs(1 / ray_dir_x);
-	game->dda.delta_dest_y = ray_dir_y == 0 ? 1e30 : fabs(1 / ray_dir_y);
-	if (ray_dir_x < 0)
+	game->dda.map.x = (int) game->player.pos.x;
+	game->dda.map.y = (int) game->player.pos.y;
+	if (ray.x == 0)
+		game->dda.delta_dest.x = 1e30;
+	else
+		game->dda.delta_dest.x = fabs(1 / ray.x);
+	if (ray.y == 0)
+		game->dda.delta_dest.y = 1e30;
+	else
+		game->dda.delta_dest.y = fabs(1 / ray.y);
+	if (ray.x < 0)
 	{
-		game->dda.step_x = -1;
-		game->dda.side_dist_x = (game->player.x - game->dda.map_x) * game->dda.delta_dest_x;
+		game->dda.step.x = -1;
+		game->dda.side_dest.x = (game->player.pos.x - game->dda.map.x) * game->dda.delta_dest.x;
 	}
 	else
 	{
-		game->dda.step_x = 1;
-		game->dda.side_dist_x = (game->dda.map_x + 1.0 - game->player.x) * game->dda.delta_dest_x;
+		game->dda.step.x = 1;
+		game->dda.side_dest.x = (game->dda.map.x + 1.0 - game->player.pos.x) * game->dda.delta_dest.x;
 	}
 
-	if (ray_dir_y < 0)
+	if (ray.y < 0)
 	{
-		game->dda.step_y = -1;
-		game->dda.side_dist_y = (game->player.y - game->dda.map_y) * game->dda.delta_dest_y;
+		game->dda.step.y = -1;
+		game->dda.side_dest.y = (game->player.pos.y - game->dda.map.y) * game->dda.delta_dest.y;
 	}
 	else
 	{
-		game->dda.step_y = 1;
-		game->dda.side_dist_y = (game->dda.map_y + 1.0 - game->player.y) * game->dda.delta_dest_y;
+		game->dda.step.y = 1;
+		game->dda.side_dest.y = (game->dda.map.y + 1.0 - game->player.pos.y) * game->dda.delta_dest.y;
 	}
 }
 
 
-void	dda_loop(t_game *game, double ray_dir_x, double ray_dir_y)
+void	dda_loop(t_game *game)
 {
 	int	hit;
 
 	hit = 0;
 	while (hit == 0)
 	{
-		if (game->dda.side_dist_x < game->dda.side_dist_y)
+		if (game->dda.side_dest.x < game->dda.side_dest.y)
 		{
-			game->dda.side_dist_x += game->dda.delta_dest_x;
-			game->dda.map_x += game->dda.step_x;
+			game->dda.side_dest.x += game->dda.delta_dest.x;
+			game->dda.map.x += game->dda.step.x;
 			game->dda.side = 0;
 		}
 		else
 		{
-			game->dda.side_dist_y += game->dda.delta_dest_y;
-			game->dda.map_y += game->dda.step_y;
+			game->dda.side_dest.y += game->dda.delta_dest.y;
+			game->dda.map.y += game->dda.step.y;
 			game->dda.side = 1;
 
 		}
-		if (game->map[game->dda.map_y][game->dda.map_x] == '1')
+		if (game->map[(int) game->dda.map.y][(int) game->dda.map.x] == '1')
 		{
 			hit = 1;
 		}
 	}
 	if (game->dda.side == 0)
-		game->dda.perp_wall_dist = game->dda.side_dist_x - game->dda.delta_dest_x;
-		/*game->dda.perp_wall_dist = (game->dda.map_x - game->player.x + (1 - game->dda.step_x) / 2) / ray_dir_x;*/
+		game->dda.perp_wall_dist = game->dda.side_dest.x - game->dda.delta_dest.x;
 	else
-		game->dda.perp_wall_dist = game->dda.side_dist_y - game->dda.delta_dest_y;
-		/*game->dda.perp_wall_dist = (game->dda.map_y - game->player.y + (1 - game->dda.step_y) / 2) / ray_dir_y;*/
+		game->dda.perp_wall_dist = game->dda.side_dest.y - game->dda.delta_dest.y;
 }
 
 void	put_mlx_pixel(t_image *img, int x, int y, int color)
@@ -113,9 +117,10 @@ void	wall_height(t_game *game, int x)
 	if (draw_end >= W_HEIGHT)
 		draw_end = W_HEIGHT - 1;
 	if (game->dda.side == 1)
-		color = YELLOW;
-	else
 		color = GREEN;
+	else
+		color = RED;
+	/*draw_texures(game, img, x, draw_start, draw_end);*/
 	draw_vert_line(game, x, draw_start, draw_end, color);
 }
 
@@ -129,9 +134,9 @@ void clear_image(t_game *game)
 	while (y < W_HEIGHT)
 	{
 		if (y < W_HEIGHT / 2)
-			color = CEILING;
+			color = BLACK;
 		else
-			color = FLOOR;
+			color = BLACK;
 		x = 0;
 		while (x < W_WIDTH)
 		{
@@ -146,18 +151,16 @@ void	cast_rays(t_game *game)
 {
 	int	x;
 	double	camera_x;
-	double	ray_dir_x;
-	double	ray_dir_y;
+	t_vec2	ray;
 
 	clear_image(game);
 	x = 0;
 	while (x < W_WIDTH)
 	{
 		camera_x = 2 * x / (double) W_WIDTH - 1;
-		ray_dir_x = game->player.dir_x + game->player.plane_x * camera_x;
-		ray_dir_y = game->player.dir_y + game->player.plane_y * camera_x;
-		init_dda(game, ray_dir_x, ray_dir_y);
-		dda_loop(game, ray_dir_x, ray_dir_y);
+		ray = vec_add(game->player.dir, vec_scale(game->player.plane, camera_x));
+		init_dda(game, ray);
+		dda_loop(game);
 		wall_height(game, x);
 		x++;
 	}
