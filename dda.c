@@ -102,13 +102,19 @@ void	draw_vert_line(t_game *game, int x, int draw_start, int draw_end, int color
 	}
 }
 
-void	wall_height(t_game *game, int x)
+void	chose_textures(t_game *game, t_vec2 ray)
+{
+
+}
+
+void	wall_height(t_game *game, int x, t_vec2 ray)
 {
 	int	line_height;
 	int	draw_start;
 	int	draw_end;
 	int	color;
 
+	chose_textures(game, ray);
 	line_height = (int) (W_HEIGHT / game->dda.perp_wall_dist);
 	draw_start = -line_height / 2 + W_HEIGHT / 2;
 	if (draw_start < 0)
@@ -116,11 +122,15 @@ void	wall_height(t_game *game, int x)
 	draw_end = line_height / 2 + W_HEIGHT / 2;
 	if (draw_end >= W_HEIGHT)
 		draw_end = W_HEIGHT - 1;
-	if (game->dda.side == 1)
-		color = GREEN;
+	if (game->dda.side == 0)
+		game->text.wall_x = game->player.pos.y + game->dda.perp_wall_dist * ray.y;
 	else
-		color = RED;
-	/*draw_texures(game, img, x, draw_start, draw_end);*/
+		game->text.wall_x = game->player.pos.x + game->dda.perp_wall_dist * ray.x;
+	game->text.wall_x -= floor(game->text.wall_x);
+	/*	color = GREEN;*/
+	/*else*/
+	/*	color = RED;*/
+	draw_texures(game, img, x, draw_start, draw_end);
 	draw_vert_line(game, x, draw_start, draw_end, color);
 }
 
@@ -161,7 +171,7 @@ void	cast_rays(t_game *game)
 		ray = vec_add(game->player.dir, vec_scale(game->player.plane, camera_x));
 		init_dda(game, ray);
 		dda_loop(game);
-		wall_height(game, x);
+		wall_height(game, x, ray);
 		x++;
 	}
 	minimap(game);

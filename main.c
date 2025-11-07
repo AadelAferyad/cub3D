@@ -66,11 +66,6 @@ int	key_pressed(int key_code, t_game *game)
 		game->player.dir = vec_rotate(game->player.dir, -ROTATION);
 		game->player.plane = vec_rotate(game->player.plane, -ROTATION);
 	}
-	// not sure below can i remove it ?
-	/*if (game->player.x >= W_HEIGHT || game->player.x >= W_WIDTH) */
-	/*	vec_update(&game->player.pos, W_WIDTH - 1, W_HEIGHT - 1);*/
-	/*if (game->player.y <= 0 || game->player.y <= 0)*/
-	/*	vec_update(&game->player.pos, 0, 0);*/
 	cast_rays(game);
 	return (0);
 }
@@ -104,13 +99,13 @@ void	init_game(t_game *game)
 	if (!game->mlx)
 		exit(1); //TODO free and print error of mlx failure 
 	game->window = mlx_new_window(game->mlx, W_WIDTH, W_HEIGHT, "cub3d");
-	game->player.a = 0;
 	game->player.dir = vec_init(-1, 0);
 	game->player.plane = vec_init(0, 0.66);
 	game->img = malloc(sizeof(t_image)); //TODO protect malloc and FREE!!!
 	game->img->image = mlx_new_image(game->mlx, W_WIDTH, W_HEIGHT);
 	game->img->buff = mlx_get_data_addr(game->img->image, &game->img->bites_per_pixel, &game->img->size_line, &game->img->endian);
 	player_pos(game);
+	init_textures(game);
 	cast_rays(game);
 	mlx_hook(game->window, 2, 3, key_pressed, game);
 	mlx_loop(game->mlx);

@@ -42,10 +42,10 @@
 # define FLOOR 0x964B00
 # define BLACK 0x000000
 
+
 typedef struct s_player_info
 {
 	t_vec2	pos;
-	double	a;
 	t_vec2	dir;
 	t_vec2	plane;
 } t_player;
@@ -57,7 +57,17 @@ typedef struct s_image_info
 	int	bites_per_pixel;
 	int	size_line;
 	int	endian;
+	int	width;
+	int	height;
 } t_image;
+
+typedef struct	s_text_calc
+{
+	double	step;
+	int	text_pos;
+	double	wall_x;
+	double	text_x;
+} t_text;
 
 typedef struct	s_dda_algo
 {
@@ -76,6 +86,9 @@ typedef struct s_game_struct
 	void	*mlx;
 	void	*window;
 	t_image	*img;
+	t_image	textures[4];
+	int	text_index;
+	t_text	text;
 	t_dda	dda;
 	t_player	player;
 
@@ -83,6 +96,6 @@ typedef struct s_game_struct
 } t_game;
 
 void	minimap(t_game *game);
-void	*mlx_file_to_image(void *mlx, char *str);
+void	init_textures(t_game *game);
 void	draw_texures(t_game *game, void *img , int x, int draw_start, int draw_end);
 #endif
