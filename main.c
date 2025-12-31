@@ -13,24 +13,24 @@
 #include <cub3d.h>
 #include <dda.h>
 
-static void	print_map(char **map) //DEBUG function
-{
-	int	i;
+// static void	print_map(char **map) // DEBUG function
+// {
+// 	int	i;
 
-	i = 0;
-	while (map[i])
-	{
-		printf("%s\n", map[i]);
-		i++;
-	}
+// 	i = 0;
+// 	while (map[i])
+// 	{
+// 		printf("%s\n", map[i]);
+// 		i++;
+// 	}
 
-}
+// }
 
 int	key_pressed(int key_code, t_game *game)
 {
 	t_vec2	pos;
-	double	old_dir;
-	double	old_plane;	
+	// double	old_dir; what is this ?
+ 	// double	old_plane; what is this ?	
 	
 	vec_copy(&pos, game->player.pos);
 	if (key_code == ESC)
@@ -116,9 +116,12 @@ int	main(int ac, char **av)
 	t_game	game;
 
 	if (ac != 2)
-		return (0); /*IMPLEMENT LATTER print usage or return error*/
-	game.map = parse(av[1]); //TODO (PARSING NOT DONE YET)
-	print_map(game.map);
-	init_game(&game);
+	{
+		write(2, "Usage -> ./cube3d filename.cub\n",31);
+		return (0);
+	}
+	game.map = parse(av[1]); //TODO (PARSING NOT DONE YET)	
+	// print_map(game.map);
+	// init_game(&game);
 	return (0);
 }

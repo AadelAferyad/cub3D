@@ -104,7 +104,9 @@ void	draw_vert_line(t_game *game, int x, int draw_start, int draw_end, int color
 
 void	chose_textures(t_game *game, t_vec2 ray)
 {
-
+	(void)game;
+	(void)ray;
+	// what is this ?
 }
 
 void	wall_height(t_game *game, int x, t_vec2 ray)
@@ -112,7 +114,7 @@ void	wall_height(t_game *game, int x, t_vec2 ray)
 	int	line_height;
 	int	draw_start;
 	int	draw_end;
-	int	color;
+	// int	color; what is this ?
 	t_image	*tex;
 	int	tex_x;
 
