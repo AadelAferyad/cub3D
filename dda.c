@@ -113,6 +113,8 @@ void	wall_height(t_game *game, int x, t_vec2 ray)
 	int	draw_start;
 	int	draw_end;
 	int	color;
+	t_image	*tex;
+	int	tex_x;
 
 	chose_textures(game, ray);
 	line_height = (int) (W_HEIGHT / game->dda.perp_wall_dist);
@@ -127,11 +129,9 @@ void	wall_height(t_game *game, int x, t_vec2 ray)
 	else
 		game->text.wall_x = game->player.pos.x + game->dda.perp_wall_dist * ray.x;
 	game->text.wall_x -= floor(game->text.wall_x);
-	/*	color = GREEN;*/
-	/*else*/
-	/*	color = RED;*/
-	draw_texures(game, img, x, draw_start, draw_end);
-	draw_vert_line(game, x, draw_start, draw_end, color);
+	tex = get_right_texture(game, ray);
+	tex_x = textue_x(game, tex, ray);
+	draw_textured_column(game, x, draw_start, draw_end, tex, tex_x, line_height);
 }
 
 void clear_image(t_game *game)

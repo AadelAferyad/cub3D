@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include <cub3d.h>
+
 void	create_put_image(t_game *game, int x, int y, unsigned int color)
 {
 	int	i;
@@ -31,13 +32,22 @@ void	create_put_image(t_game *game, int x, int y, unsigned int color)
 		j++;
 	}
 }
-/**/
-/*void	draw_map(t_game *game)*/
+
+/*draw_texures(game, img, x, draw_start, draw_end)*/
 /*{*/
-/*	int	x;*/
+/*	int	tex_y;*/
+/*	int	tex_pos;*/
 /*	int	y;*/
 /**/
-/*	y = 0;*/
-/*	x = 0;*/
-/**/
+/*	double step = (double)texture->height / line_height;*/
+/*	double tex_pos = (draw_start - WIN_H / 2 + line_height / 2) * step;*/
+/*	y = draw_start;*/
+/*	while (y < draw_end)*/
+/*	{*/
+/*		tex_y = (int)tex_pos & (texture->height - 1);*/
+/*		tex_pos += step;*/
+/*		int color = get_texture_pixel(texture, tex_x, tex_y);*/
+/*		put_img(game->img, x, y, color);*/
+/*		y++;*/
+/*	}*/
 /*}*/
