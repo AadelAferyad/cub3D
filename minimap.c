@@ -15,12 +15,24 @@
 
 void draw_player_on_minimap(t_game *game)
 {
-    int px = game->player.pos.x * MINIMAP_SIZE;
-    int py = game->player.pos.y * 5;
+	int	px;
+	int 	py;
+	int	j;
+	int	i;
 
-    for (int j = -2; j <= 4; j++)
-        for (int i = -2; i <= 4; i++)
-            put_mlx_pixel(game->img, px + i, py + j, GREEN);
+	px = 20 + game->player.pos.x * MINIMAP_SIZE;
+	py = 20 + game->player.pos.y * MINIMAP_SIZE;
+	j = -2;
+	while (j <= 2)
+	{
+		i = -2;
+		while (i <= 2)
+		{
+			put_mlx_pixel(game->img, px + i, py + j, GREEN);
+			i++;
+		}
+		j++;
+	}
 }
 
 void	draw_map(t_game *game, int y, int x, int color)
@@ -31,8 +43,8 @@ void	draw_map(t_game *game, int y, int x, int color)
 	int	pixel_y;
 
 	j = 0;
-	pixel_x = x * MINIMAP_SIZE;
-	pixel_y = y * 5;
+	pixel_x = 20 + x * MINIMAP_SIZE;
+	pixel_y = 20 + y * MINIMAP_SIZE;
 	while (j < MINIMAP_SIZE)
 	{
 		i = 0;
@@ -59,7 +71,7 @@ void	minimap(t_game *game)
 		{
 			if (game->map[y][x] == '0')
 				draw_map(game, y, x, BLUE);
-			if (game->map[y][x] == '1')
+			else if (game->map[y][x] == '1')
 				draw_map(game, y, x, RED);
 			x++;
 		}
