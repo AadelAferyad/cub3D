@@ -27,11 +27,6 @@
 # define SCALE 50
 # define W_HEIGHT 800
 # define MINIMAP_SIZE 6
-# define UP 119
-# define DOWN 115
-# define RIGHT 100
-# define LEFT 97
-# define ESC 65307
 # define MOVE_SPEED 0.5
 # define ROTATION 0.05
 # define PI 3.14159265358979323846
@@ -42,6 +37,17 @@
 # define YELLOW 0xFFFF00
 # define FLOOR 0x964B00
 # define BLACK 0x000000
+
+# define UP 119
+# define DOWN 115
+# define RIGHT 100
+# define LEFT 97
+# define ESC 65307
+
+# define KEY_LEFT 65361
+# define KEY_RIGHT 65363
+# define KEY_UP 65362
+# define KEY_DOWN 65364
 
 # define NORTH 0
 # define WEST 1
