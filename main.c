@@ -54,6 +54,7 @@ void	init_game(t_game *game)
 	init_textures(game);
 	cast_rays(game);
 	mlx_hook(game->window, 2, 3, key_pressed, game);
+	mlx_hook(game->window, 17, 0, ft_destroy, game);
 	mlx_loop(game->mlx);
 }
 

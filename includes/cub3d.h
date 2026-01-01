@@ -115,13 +115,10 @@ void	draw_textured_column(t_game *game, int x, t_vec2 draw, t_image *tex, int te
 void	put_img(t_image *img, int x, int y, int color);
 void	init_textures(t_game *game);
 
-void	ft_destroy(t_game *game);
+int		ft_destroy(t_game *game);
 void	ft_exit(t_game *game);
 void	clear_image(t_game *game);
 
 void	print_error_exit(char *str);
-void	ft_destroy(t_game *game);
-void	ft_exit(t_game *game);
-
 int	key_pressed(int key_code, t_game *game);
 #endif
