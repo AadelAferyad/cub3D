@@ -102,7 +102,7 @@ typedef struct s_game_struct
 	t_text	text;
 	t_dda	dda;
 	t_player	player;
-
+	t_header	*info;
 
 } t_game;
 

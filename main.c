@@ -60,13 +60,15 @@ void	init_game(t_game *game)
 int	main(int ac, char **av)
 {
 	t_game	game;
+    t_header	header;
 
 	if (ac != 2)
 	{
 		write(2, "Usage -> ./cube3d filename.cub\n",31);
 		return (0);
 	}
-	game.map = parse(av[1]); //TODO (PARSING NOT DONE YET)
+	game.info = &header;
+	game.map = parse(av[1], &header); //TODO (PARSING NOT DONE YET)
 	init_game(&game);
 	return (0);
 }

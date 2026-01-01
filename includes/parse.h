@@ -32,9 +32,10 @@ typedef struct s_header
     char    *ea_path;
     int     floor_color;
     int     ceiling_color;
+    char    compass;
 } t_header;
 
-char	**parse(char *file);
+char	**parse(char *file, t_header *header);
 
 char	*check_file(char *file);
 int		config_valid(char **lines, t_header *header);

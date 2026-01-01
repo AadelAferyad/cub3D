@@ -80,7 +80,8 @@ int	map_valid(char **map)
 {
 	size_t		rows;
 	size_t		cols;
-	size_t		i, j;
+	size_t		i;
+	size_t		j;
 	char	**new_map;
 
 	rows = ft_2d_len(map);
