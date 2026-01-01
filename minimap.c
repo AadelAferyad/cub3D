@@ -28,7 +28,7 @@ void draw_player_on_minimap(t_game *game)
 		i = -2;
 		while (i <= 2)
 		{
-			put_mlx_pixel(game->img, px + i, py + j, GREEN);
+			put_mlx_pixel(&game->minimap, px + i, py + j, GREEN);
 			i++;
 		}
 		j++;
@@ -50,7 +50,7 @@ void	draw_map(t_game *game, int y, int x, int color)
 		i = 0;
 		while (i < MINIMAP_SIZE)
 		{
-			put_mlx_pixel(game->img, pixel_x + i, pixel_y + j, color);
+			put_mlx_pixel(&game->minimap, pixel_x + i, pixel_y + j, color);
 			i++;
 		}
 		j++;

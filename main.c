@@ -34,12 +34,7 @@ int	key_pressed(int key_code, t_game *game)
 	
 	vec_copy(&pos, game->player.pos);
 	if (key_code == ESC)
-	{
-		mlx_destroy_image(game->mlx, game->img->image);
-		mlx_destroy_window(game->mlx, game->window);
-		free(game->img);
-		exit(1);
-	}
+		ft_destroy(game);
 	if (key_code == UP)
 	{
 		pos = vec_add(game->player.pos, vec_scale(game->player.dir, MOVE_SPEED));
@@ -93,17 +88,61 @@ void	player_pos(t_game *game)
 	}
 }
 
+
+
+void	print_error_exit(char *str)
+{
+	if (str)
+		printf("%s\n", str);
+	exit(1);
+}
+
+void	ft_destroy(t_game *game)
+{
+	t_image	*text;
+	int	i;
+
+	i = 0;
+	text = game->textures;
+	if (game->mlx && game->window && game->minimap.image)
+		mlx_destroy_image(game->mlx, game->minimap.image);
+	if (game->mlx && game->window)
+	{
+		while (i < 4)
+		{
+			if (game->mlx && text[i].image)
+				mlx_destroy_image(game->mlx, text[i].image);
+			i++;
+		}
+	}
+	ft_exit(game);
+}
+
+void	ft_exit(t_game *game)
+{
+	if (game->mlx && game->window)
+		mlx_destroy_window(game->mlx, game->window);
+	if (game->mlx)
+	{
+		mlx_destroy_display(game->mlx);
+		free(game->mlx);
+	}
+	/*free parsed map HERE ---?! */
+	exit(0);
+}
+
 void	init_game(t_game *game)
 {
 	game->mlx = mlx_init();
 	if (!game->mlx)
 		exit(1); //TODO free and print error of mlx failure 
 	game->window = mlx_new_window(game->mlx, W_WIDTH, W_HEIGHT, "cub3d");
+	if (!game->window)
+		print_error_exit("Failed to create new window");
 	game->player.dir = vec_init(-1, 0);
 	game->player.plane = vec_init(0, 0.66);
-	game->img = malloc(sizeof(t_image)); //TODO protect malloc and FREE!!!
-	game->img->image = mlx_new_image(game->mlx, W_WIDTH, W_HEIGHT);
-	game->img->buff = mlx_get_data_addr(game->img->image, &game->img->bites_per_pixel, &game->img->size_line, &game->img->endian);
+	game->minimap.image = mlx_new_image(game->mlx, W_WIDTH, W_HEIGHT);
+	game->minimap.buff = mlx_get_data_addr(game->minimap.image, &game->minimap.bites_per_pixel, &game->minimap.size_line, &game->minimap.endian);
 	player_pos(game);
 	init_textures(game);
 	cast_rays(game);

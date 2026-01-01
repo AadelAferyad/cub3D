@@ -97,15 +97,11 @@ void	draw_vert_line(t_game *game, int x, int draw_start, int draw_end, int color
 	y = draw_start;
 	while (y <= draw_end)
 	{
-		put_mlx_pixel(game->img, x, y, color);
+		put_mlx_pixel(&game->minimap, x, y, color);
 		y++;
 	}
 }
 
-void	chose_textures(t_game *game, t_vec2 ray)
-{
-
-}
 
 void	wall_height(t_game *game, int x, t_vec2 ray)
 {
@@ -116,7 +112,6 @@ void	wall_height(t_game *game, int x, t_vec2 ray)
 	t_image	*tex;
 	int	tex_x;
 
-	chose_textures(game, ray);
 	line_height = (int) (W_HEIGHT / game->dda.perp_wall_dist);
 	draw_start = -line_height / 2 + W_HEIGHT / 2;
 	if (draw_start < 0)
@@ -150,7 +145,7 @@ void clear_image(t_game *game)
 		x = 0;
 		while (x < W_WIDTH)
 		{
-			put_mlx_pixel(game->img, x, y, color);
+			put_mlx_pixel(&game->minimap, x, y, color);
 			x++;
 		}
 		y++;
@@ -175,5 +170,5 @@ void	cast_rays(t_game *game)
 		x++;
 	}
 	minimap(game);
-	mlx_put_image_to_window(game->mlx, game->window, game->img->image, 0, 0);
+	mlx_put_image_to_window(game->mlx, game->window, game->minimap.image, 0, 0);
 }

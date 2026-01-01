@@ -93,7 +93,7 @@ void	draw_textured_column(
 			+ tex_x * (tex->bites_per_pixel / 8);
 
 		int color = *(unsigned int *)pixel;
-		put_img(game->img, x, y, color);
+		put_img(&game->minimap, x, y, color);
 		y++;
 	}
 }

@@ -90,7 +90,7 @@ typedef struct s_game_struct
 	char	**map;
 	void	*mlx;
 	void	*window;
-	t_image	*img;
+	t_image	minimap;
 	t_image	textures[4];
 	int	text_index;
 	t_text	text;
@@ -108,4 +108,7 @@ int	textue_x(t_game *game, t_image *tex, t_vec2 ray);
 void	draw_textured_column(t_game *game, int x, int draw_start, int draw_end, t_image *tex, int tex_x, int line_height);
 void	put_img(t_image *img, int x, int y, int color);
 void	init_textures(t_game *game);
+
+void	ft_destroy(t_game *game);
+void	ft_exit(t_game *game);
 #endif
