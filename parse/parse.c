@@ -73,6 +73,5 @@ char	**parse(char *file)
 		free_2d(map);
 		exit(EXIT_FAILURE);
 	}
-    // printf("Map is valid\n");
 	return (map);
 }

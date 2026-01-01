@@ -19,6 +19,8 @@
 # include <libft.h>
 # include <fcntl.h>
 
+# define EXIT_FAILURE 42
+
 typedef struct s_parsing_struct
 {
 	char	*map;
