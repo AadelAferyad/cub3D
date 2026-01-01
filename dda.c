@@ -90,7 +90,7 @@ void	wall_height(t_game *game, int x, t_vec2 ray)
 {
 	int		line_height;
 	t_vec2	draw;
-	int		color;
+	// int		color;
 	t_image	*tex;
 	int		tex_x;
 

@@ -19,8 +19,6 @@
 # include <libft.h>
 # include <fcntl.h>
 
-# define EXIT_FAILURE 42
-
 typedef struct s_parsing_struct
 {
 	char	*map;
@@ -46,5 +44,7 @@ size_t	ft_2d_len(char **arr);
 char	**ft_2d_dup(char **src);
 void	free_2d(char **arr);
 int     is_valid_char(char c);
+void    print_error(char *str);
+
 
 #endif

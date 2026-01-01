@@ -18,17 +18,17 @@ static int check_texture_path(char *line, char **path)
 
     char *buffer = ft_strtrim(line, " ");
     if (!buffer || !*buffer)
-        return (write(2, "Error -> Invalid texture path\n", 30), -1);
+        return (print_error("Error -> Invalid texture path\n"), -1);
     if (!ft_strrchr(buffer, '.') || ft_strncmp(ft_strrchr(buffer, '.'), ".xpm", 4) != 0)
     {
         free(buffer);
-        return (write(2, "Error -> Texture file must end with .xpm\n", 41), -1);
+        return (print_error("Error -> Texture file must end with .xpm\n"), -1);
     }
     fd = open(buffer, O_RDONLY);
     if (fd < 0)
     {
         free(buffer);
-        write(2, "Error -> Cant access texture file\n", 35);
+        print_error("Error -> Cant access texture file\n");
         return (-1);
     }
     close(fd);
@@ -45,14 +45,14 @@ static int check_rgb(char *line, int *color)
     rgb = ft_split(line, ',');
     free(line);
     if (!rgb || ft_2d_len(rgb) != 3)
-        return (write(2, "Error -> invalid color format\n", 30), free_2d(rgb), -1);
+        return (print_error("Error -> invalid color format\n"), free_2d(rgb), -1);
     r = ft_atoi(rgb[0]);
     g = ft_atoi(rgb[1]);
     b = ft_atoi(rgb[2]);
     if (r < 0 || r > 255 || g < 0 || g > 255 || b < 0 || b > 255)
     {
         free_2d(rgb);
-        return (write(2, "Error -> RGB values must be between 0-255\n", 43), -1);
+        return (print_error("Error -> RGB values must be between 0-255\n"), -1);
     }
     *color = (r * 65536) + (g * 256) + b;
     free_2d(rgb);
@@ -88,6 +88,6 @@ int config_valid(char **lines, t_header *header)
     }
     if (!header->no_path || !header->so_path || !header->we_path || !header->ea_path ||
         header->floor_color == -1 || header->ceiling_color == -1)
-        return (write(2, "Error -> invalid config element\n", 33), -1);
+        return (print_error("Error -> invalid config element\n"), -1);
     return (i);
 }

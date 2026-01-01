@@ -19,13 +19,13 @@ int check_ext(char *file)
 
     if (!file)
     {
-        write(2, "Error -> No file provided\n", 25);
+        print_error("Error -> No file provided\n");
         return (-1);
     }
     len = ft_strlen(file);
     if (len < 4 || ft_strncmp(file + len - 4, ".cub", 4) != 0)
     {
-        write(2, "Error -> Invalid file extension\n", 33);
+        print_error("Error -> Invalid file extension\n");
         return (-1);
     }
     return (0);
@@ -40,13 +40,13 @@ int open_file(char *file)
     fd = open(file, O_RDONLY);
     if (fd < 0)
     {
-        write(2, "Error -> opening file\n", 23);
+        print_error("Error -> opening file\n");
         return (-1);
     }
     read_buff = read(fd, buffer, 1);
     if (read_buff <= 0)
     {
-        write(2, "Error -> File is empty\n", 23);
+        print_error("Error -> File is empty\n");
         close(fd);
         return (-1);
     }
@@ -67,7 +67,7 @@ char *read_file(int fd)
         free(line);
         if (!buffer)
         {
-            write(2, "Error -> Memory allocation failure in reading file\n", 54);
+            print_error("Error -> Memory allocation failure in reading file\n");
             return (NULL);
         }
     }
@@ -81,19 +81,19 @@ char *check_file(char *file)
 
     if (check_ext(file) < 0)
     {
-        write(2, "Error -> Invalid file extension\n", 33);
+        print_error("Error -> Invalid file extension\n");
         return (NULL);
     }
     fd = open_file(file);
     if (fd < 0)
     {
-        write(2, "Error -> File cannot be opened or is unreadable\n", 47);
+        print_error("Error -> File cannot be opened or is unreadable\n");
         return (NULL);
     }
     buffer = read_file(fd);
     if (!buffer)
     {
-        write(2, "Error -> Failed to read file contents\n", 38);
+        print_error("Error -> Failed to read file contents\n");
         close(fd);
         return (NULL);
     }
