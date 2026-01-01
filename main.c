@@ -122,6 +122,6 @@ int	main(int ac, char **av)
 	}
 	game.map = parse(av[1]); //TODO (PARSING NOT DONE YET)	
 	// print_map(game.map);
-	// init_game(&game);
+	init_game(&game);
 	return (0);
 }
