@@ -6,7 +6,7 @@
 /*   By: aaferyad <aaferyad@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/29 12:00:55 by aaferyad          #+#    #+#             */
-/*   Updated: 2025/11/03 10:26:21 by aaferyad         ###   ########.fr       */
+/*   Updated: 2026/01/01 05:39:54 by aaferyad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,10 +105,17 @@ void	init_textures(t_game *game);
 void	draw_texures(t_game *game, void *img , int x, int draw_start, int draw_end);
 t_image	*get_right_texture(t_game *game, t_vec2 ray);
 int	textue_x(t_game *game, t_image *tex, t_vec2 ray);
-void	draw_textured_column(t_game *game, int x, int draw_start, int draw_end, t_image *tex, int tex_x, int line_height);
+void	draw_textured_column(t_game *game, int x, t_vec2 draw, t_image *tex, int tex_x, int line_height);
 void	put_img(t_image *img, int x, int y, int color);
 void	init_textures(t_game *game);
 
 void	ft_destroy(t_game *game);
 void	ft_exit(t_game *game);
+void	clear_image(t_game *game);
+
+void	print_error_exit(char *str);
+void	ft_destroy(t_game *game);
+void	ft_exit(t_game *game);
+
+int	key_pressed(int key_code, t_game *game);
 #endif

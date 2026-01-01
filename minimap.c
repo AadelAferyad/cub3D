@@ -6,17 +6,17 @@
 /*   By: aaferyad <aaferyad@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/01 11:40:40 by aaferyad          #+#    #+#             */
-/*   Updated: 2025/10/01 11:41:04 by aaferyad         ###   ########.fr       */
+/*   Updated: 2026/01/01 05:50:57 by aaferyad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <cub3d.h>
 #include <dda.h>
 
-void draw_player_on_minimap(t_game *game)
+void	draw_player_on_minimap(t_game *game)
 {
 	int	px;
-	int 	py;
+	int	py;
 	int	j;
 	int	i;
 
@@ -55,7 +55,6 @@ void	draw_map(t_game *game, int y, int x, int color)
 		}
 		j++;
 	}
-
 }
 
 void	minimap(t_game *game)

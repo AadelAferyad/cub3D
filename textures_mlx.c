@@ -6,7 +6,7 @@
 /*   By: aaferyad <aaferyad@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/03 10:16:20 by aaferyad          #+#    #+#             */
-/*   Updated: 2025/11/03 12:11:18 by aaferyad         ###   ########.fr       */
+/*   Updated: 2026/01/01 06:30:49 by aaferyad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,8 +67,7 @@ int	textue_x(t_game *game, t_image *tex, t_vec2 ray)
 void	draw_textured_column(
 	t_game *game,
 	int x,
-	int draw_start,
-	int draw_end,
+	t_vec2	draw,
 	t_image *tex,
 	int tex_x,
 	int line_height
@@ -80,10 +79,10 @@ void	draw_textured_column(
 
 	step = (double)tex->height / line_height;
 
-	tex_pos = (draw_start - W_HEIGHT / 2 + line_height / 2) * step;
+	tex_pos = (draw.x - W_HEIGHT / 2 + line_height / 2) * step;
 
-	y = draw_start;
-	while (y < draw_end)
+	y = draw.x;
+	while (y < draw.y)
 	{
 		int tex_y = (int)tex_pos & (tex->height - 1);
 		tex_pos += step;

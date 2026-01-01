@@ -6,12 +6,40 @@
 /*   By: aaferyad <aaferyad@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/27 11:41:46 by aaferyad          #+#    #+#             */
-/*   Updated: 2025/11/03 10:27:01 by aaferyad         ###   ########.fr       */
+/*   Updated: 2026/01/01 05:11:00 by aaferyad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include <dda.h>
-# include <cub3d.h>
+#include <dda.h>
+#include <cub3d.h>
+
+void	dda_helper(t_game *game, t_vec2 ray)
+{
+	if (ray.x < 0)
+	{
+		game->dda.step.x = -1;
+		game->dda.side_dest.x = (game->player.pos.x - game->dda.map.x) * \
+game->dda.delta_dest.x;
+	}
+	else
+	{
+		game->dda.step.x = 1;
+		game->dda.side_dest.x = (game->dda.map.x + 1.0 - game->player.pos.x) * \
+game->dda.delta_dest.x;
+	}
+	if (ray.y < 0)
+	{
+		game->dda.step.y = -1;
+		game->dda.side_dest.y = (game->player.pos.y - game->dda.map.y) * \
+game->dda.delta_dest.y;
+	}
+	else
+	{
+		game->dda.step.y = 1;
+		game->dda.side_dest.y = (game->dda.map.y + 1.0 - game->player.pos.y) * \
+game->dda.delta_dest.y;
+	}
+}
 
 void	init_dda(t_game *game, t_vec2 ray)
 {
@@ -25,29 +53,8 @@ void	init_dda(t_game *game, t_vec2 ray)
 		game->dda.delta_dest.y = 1e30;
 	else
 		game->dda.delta_dest.y = fabs(1 / ray.y);
-	if (ray.x < 0)
-	{
-		game->dda.step.x = -1;
-		game->dda.side_dest.x = (game->player.pos.x - game->dda.map.x) * game->dda.delta_dest.x;
-	}
-	else
-	{
-		game->dda.step.x = 1;
-		game->dda.side_dest.x = (game->dda.map.x + 1.0 - game->player.pos.x) * game->dda.delta_dest.x;
-	}
-
-	if (ray.y < 0)
-	{
-		game->dda.step.y = -1;
-		game->dda.side_dest.y = (game->player.pos.y - game->dda.map.y) * game->dda.delta_dest.y;
-	}
-	else
-	{
-		game->dda.step.y = 1;
-		game->dda.side_dest.y = (game->dda.map.y + 1.0 - game->player.pos.y) * game->dda.delta_dest.y;
-	}
+	dda_helper(game, ray);
 }
-
 
 void	dda_loop(t_game *game)
 {
@@ -67,94 +74,48 @@ void	dda_loop(t_game *game)
 			game->dda.side_dest.y += game->dda.delta_dest.y;
 			game->dda.map.y += game->dda.step.y;
 			game->dda.side = 1;
-
 		}
 		if (game->map[(int) game->dda.map.y][(int) game->dda.map.x] == '1')
-		{
 			hit = 1;
-		}
 	}
 	if (game->dda.side == 0)
-		game->dda.perp_wall_dist = game->dda.side_dest.x - game->dda.delta_dest.x;
+		game->dda.perp_wall_dist = game->dda.side_dest.x - \
+game->dda.delta_dest.x;
 	else
-		game->dda.perp_wall_dist = game->dda.side_dest.y - game->dda.delta_dest.y;
+		game->dda.perp_wall_dist = game->dda.side_dest.y - \
+game->dda.delta_dest.y;
 }
-
-void	put_mlx_pixel(t_image *img, int x, int y, int color)
-{
-	char	*pixel;
-
-	if (x < 0 || y < 0 || x >= W_WIDTH || y >= W_HEIGHT)
-		return;
-	pixel = img->buff + (y * img->size_line) + x * (img->bites_per_pixel / 8);
-	*(unsigned int *) pixel = color;	
-}
-
-void	draw_vert_line(t_game *game, int x, int draw_start, int draw_end, int color)
-{
-	int	y;
-
-	y = draw_start;
-	while (y <= draw_end)
-	{
-		put_mlx_pixel(&game->minimap, x, y, color);
-		y++;
-	}
-}
-
 
 void	wall_height(t_game *game, int x, t_vec2 ray)
 {
-	int	line_height;
-	int	draw_start;
-	int	draw_end;
-	int	color;
+	int		line_height;
+	t_vec2	draw;
+	int		color;
 	t_image	*tex;
-	int	tex_x;
+	int		tex_x;
 
-	line_height = (int) (W_HEIGHT / game->dda.perp_wall_dist);
-	draw_start = -line_height / 2 + W_HEIGHT / 2;
-	if (draw_start < 0)
-		draw_start = 0;
-	draw_end = line_height / 2 + W_HEIGHT / 2;
-	if (draw_end >= W_HEIGHT)
-		draw_end = W_HEIGHT - 1;
+	line_height = (int)(W_HEIGHT / game->dda.perp_wall_dist);
+	draw.x = -line_height / 2 + W_HEIGHT / 2;
+	if (draw.x < 0)
+		draw.x = 0;
+	draw.y = line_height / 2 + W_HEIGHT / 2;
+	if (draw.y >= W_HEIGHT)
+		draw.y = W_HEIGHT - 1;
 	if (game->dda.side == 0)
-		game->text.wall_x = game->player.pos.y + game->dda.perp_wall_dist * ray.y;
+		game->text.wall_x = game->player.pos.y + \
+game->dda.perp_wall_dist * ray.y;
 	else
-		game->text.wall_x = game->player.pos.x + game->dda.perp_wall_dist * ray.x;
+		game->text.wall_x = game->player.pos.x + \
+game->dda.perp_wall_dist * ray.x;
 	game->text.wall_x -= floor(game->text.wall_x);
 	tex = get_right_texture(game, ray);
 	tex_x = textue_x(game, tex, ray);
-	draw_textured_column(game, x, draw_start, draw_end, tex, tex_x, line_height);
-}
-
-void clear_image(t_game *game)
-{
-	int	y;
-	int	x;
-	int	color;
-	
-	y = 0;
-	while (y < W_HEIGHT)
-	{
-		if (y < W_HEIGHT / 2)
-			color = BLACK;
-		else
-			color = BLACK;
-		x = 0;
-		while (x < W_WIDTH)
-		{
-			put_mlx_pixel(&game->minimap, x, y, color);
-			x++;
-		}
-		y++;
-	}
+	draw_textured_column(game, x, draw, tex, tex_x, line_height);
 }
 
 void	cast_rays(t_game *game)
 {
-	int	x;
+	int		x;
 	double	camera_x;
 	t_vec2	ray;
 
@@ -163,7 +124,8 @@ void	cast_rays(t_game *game)
 	while (x < W_WIDTH)
 	{
 		camera_x = 2 * x / (double) W_WIDTH - 1;
-		ray = vec_add(game->player.dir, vec_scale(game->player.plane, camera_x));
+		ray = vec_add(game->player.dir, \
+vec_scale(game->player.plane, camera_x));
 		init_dda(game, ray);
 		dda_loop(game);
 		wall_height(game, x, ray);
