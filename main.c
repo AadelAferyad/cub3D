@@ -62,7 +62,10 @@ int	main(int ac, char **av)
 	t_game	game;
 
 	if (ac != 2)
-		return (0); /*IMPLEMENT LATTER print usage or return error*/
+	{
+		write(2, "Usage -> ./cube3d filename.cub\n",31);
+		return (0);
+	}
 	game.map = parse(av[1]); //TODO (PARSING NOT DONE YET)
 	init_game(&game);
 	return (0);
