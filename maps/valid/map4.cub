@@ -1,0 +1,21 @@
+NO textures/north_fuhrer.xpm
+SO textures/south_fuhrer.xpm
+WE textures/west_fuhrer.xpm
+EA textures/east_fuhrer.xpm
+
+F 220,100,2
+C 225,30,0
+
+11111
+10001
+10S01
+10001
+10001
+10001
+11001
+10001
+10001
+10001
+10001
+10001
+11111
