@@ -50,7 +50,8 @@ return (1);
 char	**pad_map(char **map, size_t rows, size_t cols)
 {
 	char	**new_map;
-	size_t		i, j;
+	size_t		i;
+	size_t		j;
 
 	new_map = malloc(sizeof(char *) * (rows + 1));
 	if (!new_map)
@@ -90,7 +91,7 @@ int	map_valid(char **map)
 			cols = ft_strlen(map[i]);
 	new_map = pad_map(map, rows, cols);
 	if (!new_map)
-		return (write(2, "Error -> Memory allocation failed\n", 34), -1);
+		return (print_error("Error -> Memory allocation failed\n"), -1);
 	i = -1;
 	while (++i < rows)
 	{
@@ -103,7 +104,7 @@ int	map_valid(char **map)
 				if (!flood_fill(new_map, i, j, rows, cols))
 				{
 					free_2d(new_map);
-					return (write(2, "Error -> Map is not enclosed by walls\n", 38), -1);
+					return (print_error("Error -> Map is not enclosed by walls\n"), -1);
 				}
 			}
 		}

@@ -55,3 +55,11 @@ size_t ft_2d_len(char **arr)
         len++;
     return (len);
 }
+
+void    print_error(char *str)
+{
+    size_t len;
+
+    len = ft_strlen(str);
+    write(2, str, len);
+}
