@@ -29,49 +29,49 @@ int	is_map_line(char *line)
 	return (1);
 }
 
-char	**parse(char *file)
+char **parse(char *file, t_header *header)
 {
-	char		*buff;
-	char		**lines;
-	char		**map;
-	t_header	header;
-	int			lines_start;
-	int			i;
+    char    *buff;
+    char    **lines;
+    char    **map;
+    int     lines_start;
+    int     i;
 
-	ft_bzero(&header, sizeof(t_header));
-	header.floor_color = -1;
-	header.ceiling_color = -1;
-	map = NULL;
+    ft_bzero(header, sizeof(t_header));
+    header->floor_color = -1;
+    header->ceiling_color = -1;
+	header->compass = '\0';
+    map = NULL;
 
-	buff = check_file(file);
-	if (!buff)
-		exit(EXIT_FAILURE);
-	lines = ft_split(buff, '\n');
-	free(buff);
-	if (config_valid(lines, &header) < 0)
-	{
-		free_2d(lines);
-		exit(EXIT_FAILURE);
+    buff = check_file(file);
+    if (!buff)
+        exit(EXIT_FAILURE);
+    lines = ft_split(buff, '\n');
+    free(buff);
+    if (config_valid(lines, header) < 0)
+    {
+        free_2d(lines);
+        exit(EXIT_FAILURE);
+    }
+    lines_start = -1;
+    i = -1;
+    while (lines[++i])
+    {
+        if (ft_strlen(lines[i]) == 0)
+            continue;
+        if (is_map_line(lines[i]))
+        {
+            lines_start = i;
+            break;
+        }
+    }
+    if (lines_start != -1)
+        map = ft_2d_dup(&lines[lines_start]);
+    free_2d(lines);
+    if (!map || map_valid(map) < 0)
+    {
+        free_2d(map);
+        exit(EXIT_FAILURE);
 	}
-	lines_start = -1;
-	i = -1;
-	while (lines[++i])
-	{
-		if (ft_strlen(lines[i]) == 0)
-			continue;
-		if (is_map_line(lines[i]))
-		{
-			lines_start = i;
-			break;
-		}
-	}
-	if (lines_start != -1)
-		map = ft_2d_dup(&lines[lines_start]);
-	free_2d(lines);
-	if (!map || map_valid(map) < 0)
-	{
-		free_2d(map);
-		exit(EXIT_FAILURE);
-	}
-	return (map);
+    return (map);
 }
