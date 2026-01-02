@@ -37,6 +37,11 @@ int	ft_destroy(t_game *game)
 			i++;
 		}
 	}
+	free_2d(game->map);
+	free(game->info->so_path);
+	free(game->info->no_path);
+	free(game->info->ea_path);
+	free(game->info->we_path);
 	ft_exit(game);
 	return (0);
 }
