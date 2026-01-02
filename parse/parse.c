@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaferyad <aaferyad@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: imellali <imellali@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/26 12:02:46 by aaferyad          #+#    #+#             */
-/*   Updated: 2025/09/29 12:09:49 by aaferyad         ###   ########.fr       */
+/*   Updated: 2026/01/02 01:53:42 by imellali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,5 +73,6 @@ char **parse(char *file, t_header *header)
         free_2d(map);
         exit(EXIT_FAILURE);
 	}
+    printf("map is valid\n");
     return (map);
 }

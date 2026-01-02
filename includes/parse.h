@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aaferyad <aaferyad@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: imellali <imellali@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/26 12:00:04 by aaferyad          #+#    #+#             */
-/*   Updated: 2025/09/29 12:09:35 by aaferyad         ###   ########.fr       */
+/*   Updated: 2026/01/02 01:49:58 by imellali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ size_t	ft_2d_len(char **arr);
 char	**ft_2d_dup(char **src);
 void	free_2d(char **arr);
 int     is_valid_char(char c);
+int     is_map_line(char *line);
 void    print_error(char *str);
 
 
