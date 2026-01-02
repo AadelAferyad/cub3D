@@ -12,10 +12,10 @@ MLX_LIB = -L$(MLX_DIR) -lmlx -lX11 -lXext -lm -lbsd
 INCLUDES = -Iincludes $(MLX_INC)
 
 # Sources
-SOURCE = main.c dda.c textures_mlx.c vector2d.c minimap.c destory_game.c \
-	draw_func.c keys.c gnl/get_next_line.c gnl/get_next_line_utils.c \
-	parse/parse.c parse/file_valid.c parse/config_valid.c parse/utils.c \
-	parse/map_valid.c
+SOURCE = src/main.c src/dda.c src/textures_mlx.c src/vector2d.c src/vector2d_advance.c src/minimap.c src/destory_game.c \
+	src/draw_func.c src/keys.c gnl/get_next_line.c gnl/get_next_line_utils.c \
+	src/parse/parse.c src/parse/file_valid.c src/parse/config_valid.c src/parse/utils.c \
+	src/parse/map_valid.c
 
 OBJ = $(SOURCE:.c=.o)
 
