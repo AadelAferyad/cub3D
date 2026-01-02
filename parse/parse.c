@@ -6,7 +6,7 @@
 /*   By: imellali <imellali@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/26 12:02:46 by aaferyad          #+#    #+#             */
-/*   Updated: 2026/01/02 01:53:42 by imellali         ###   ########.fr       */
+/*   Updated: 2026/01/02 02:25:21 by imellali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,11 +68,10 @@ char **parse(char *file, t_header *header)
     if (lines_start != -1)
         map = ft_2d_dup(&lines[lines_start]);
     free_2d(lines);
-    if (!map || map_valid(map) < 0)
+    if (!map || map_valid(map, header) < 0)
     {
         free_2d(map);
         exit(EXIT_FAILURE);
 	}
-    printf("map is valid\n");
     return (map);
 }

@@ -6,7 +6,7 @@
 /*   By: imellali <imellali@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/31 18:23:53 by imellali          #+#    #+#             */
-/*   Updated: 2025/12/31 18:23:55 by imellali         ###   ########.fr       */
+/*   Updated: 2026/01/02 02:24:26 by imellali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,69 +47,107 @@ int flood_fill(char **map, int x, int y, int rows, int cols)
 return (1);
 }
 
-char	**pad_map(char **map, size_t rows, size_t cols)
+char **pad_map(char **map, size_t rows, size_t cols)
 {
-	char	**new_map;
-	size_t		i;
-	size_t		j;
+    char **new_map;
+    size_t i;
+    size_t j;
 
-	new_map = malloc(sizeof(char *) * (rows + 1));
-	if (!new_map)
-		return (NULL);
-	i = -1;
-	while (++i < rows)
-	{
-		new_map[i] = malloc(sizeof(char) * (cols + 1));
-		if (!new_map[i])
-			return (NULL);
-		j = -1;
-		while (++j < cols)
-		{
-			if (j < ft_strlen(map[i]))
-				new_map[i][j] = map[i][j];
-			else
-				new_map[i][j] = '1';
-		}
-		new_map[i][cols] = '\0';
-	}
-	new_map[rows] = NULL;
-	return (new_map);
+    new_map = malloc(sizeof(char *) * (rows + 1));
+    if (!new_map)
+        return (NULL);
+    i = 0;
+    while (i < rows)
+    {
+        new_map[i] = malloc(sizeof(char) * (cols + 1));
+        if (!new_map[i])
+        {
+            size_t temp;
+            temp = i;
+            while (temp-- > 0)
+                free(new_map[temp]);
+            free(new_map);
+            return (NULL);
+        }
+        j = 0;
+        while (j < cols)
+        {
+            if (j < ft_strlen(map[i]) && map[i][j] != ' ')
+                new_map[i][j] = map[i][j];
+            else
+                new_map[i][j] = '1';
+            j++;
+        }
+        new_map[i][cols] = '\0';
+        i++;
+    }
+    new_map[rows] = NULL;
+    return (new_map);
 }
 
-int	map_valid(char **map)
+int map_valid(char **map, t_header *header)
 {
-	size_t		rows;
-	size_t		cols;
-	size_t		i;
-	size_t		j;
-	char	**new_map;
+    size_t rows;
+    size_t cols;
+    size_t i;
+    size_t j;
+    int player_count;
+    char **new_map;
 
-	rows = ft_2d_len(map);
-	cols = 0;
-	i = -1;
-	while (++i < rows)
-		if (ft_strlen(map[i]) > cols)
-			cols = ft_strlen(map[i]);
-	new_map = pad_map(map, rows, cols);
-	if (!new_map)
-		return (print_error("Error -> Memory allocation failed\n"), -1);
-	i = -1;
-	while (++i < rows)
-	{
-		j = -1;
-		while (++j < cols)
-		{
-			if (is_valid_char(new_map[i][j])
-				&& (new_map[i][j] == '0' || spawn_player(new_map[i][j])))
-			{
-				if (!flood_fill(new_map, i, j, rows, cols))
-				{
-					free_2d(new_map);
-					return (print_error("Error -> Map is not enclosed by walls\n"), -1);
-				}
-			}
-		}
-	}
-	free_2d(new_map);
-	return (0);
+    rows = ft_2d_len(map);
+    cols = 0;
+    i = 0;
+    while (i < rows)
+    {
+        if (ft_strlen(map[i]) > cols)
+            cols = ft_strlen(map[i]);
+        i++;
+    }
+    new_map = pad_map(map, rows, cols);
+    if (!new_map)
+        return (print_error("Error -> Memory allocation failed\n"), -1);
+    player_count = 0;
+    i = 0;
+    while (i < rows)
+    {
+        j = 0;
+        while (j < cols)
+        {
+            if (spawn_player(new_map[i][j]))
+            {
+                player_count++;
+                if (player_count > 1)
+                {
+                    free_2d(new_map);
+                    return (print_error("Error -> cant do multiple player spawn\n"), -1);
+                }
+                header->compass = new_map[i][j];
+                new_map[i][j] = '0';
+            }
+            j++;
+        }
+        i++;
+    }
+    if (player_count == 0)
+    {
+        free_2d(new_map);
+        return (print_error("Error -> No player spawn point found\n"), -1);
+    }
+    i = 0;
+    while (i < rows)
+    {
+        j = 0;
+        while (j < cols)
+        {
+            if (new_map[i][j] == '0' && !flood_fill(new_map, i, j, rows, cols))
+            {
+                free_2d(new_map);
+                return (print_error("Error -> Map is not enclosed by walls\n"), -1);
+            }
+            j++;
+        }
+        i++;
+    }
+    free_2d(new_map);
+    return (0);
 }
