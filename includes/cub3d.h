@@ -27,9 +27,10 @@
 # define SCALE 50
 # define W_HEIGHT 800
 # define MINIMAP_SIZE 6
-# define MOVE_SPEED 0.5
+# define MOVE_SPEED 0.05
 # define ROTATION 0.05
-# define PI 3.14159265358979323846
+# define EPS 1e-8
+# define INF 1e30
 # define RED 0xFF0000
 # define BLUE 0x0000FF
 # define CEILING 0x00FFFF 
@@ -37,6 +38,8 @@
 # define YELLOW 0xFFFF00
 # define FLOOR 0x964B00
 # define BLACK 0x000000
+
+# define PLAYER_RADIUS 0.9
 
 # define UP 119
 # define DOWN 115

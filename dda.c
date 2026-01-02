@@ -18,50 +18,53 @@ void	dda_helper(t_game *game, t_vec2 ray)
 	if (ray.x < 0)
 	{
 		game->dda.step.x = -1;
-		game->dda.side_dest.x = (game->player.pos.x - game->dda.map.x) * \
-game->dda.delta_dest.x;
+		game->dda.side_dest.x =
+			(game->player.pos.x - game->dda.map.x) * game->dda.delta_dest.x;
 	}
 	else
 	{
 		game->dda.step.x = 1;
-		game->dda.side_dest.x = (game->dda.map.x + 1.0 - game->player.pos.x) * \
-game->dda.delta_dest.x;
+		game->dda.side_dest.x =
+			(game->dda.map.x + 1.0 - game->player.pos.x) * game->dda.delta_dest.x;
 	}
+
 	if (ray.y < 0)
 	{
 		game->dda.step.y = -1;
-		game->dda.side_dest.y = (game->player.pos.y - game->dda.map.y) * \
-game->dda.delta_dest.y;
+		game->dda.side_dest.y =
+			(game->player.pos.y - game->dda.map.y) * game->dda.delta_dest.y;
 	}
 	else
 	{
 		game->dda.step.y = 1;
-		game->dda.side_dest.y = (game->dda.map.y + 1.0 - game->player.pos.y) * \
-game->dda.delta_dest.y;
+		game->dda.side_dest.y =
+			(game->dda.map.y + 1.0 - game->player.pos.y) * game->dda.delta_dest.y;
 	}
 }
 
 void	init_dda(t_game *game, t_vec2 ray)
 {
-	game->dda.map.x = (int) game->player.pos.x;
-	game->dda.map.y = (int) game->player.pos.y;
-	if (ray.x == 0)
-		game->dda.delta_dest.x = 1e30;
+	game->dda.map.x = (int)game->player.pos.x;
+	game->dda.map.y = (int)game->player.pos.y;
+
+	if (fabs(ray.x) < EPS)
+		game->dda.delta_dest.x = INF;
 	else
-		game->dda.delta_dest.x = fabs(1 / ray.x);
-	if (ray.y == 0)
-		game->dda.delta_dest.y = 1e30;
+		game->dda.delta_dest.x = fabs(1.0 / ray.x);
+
+	if (fabs(ray.y) < EPS)
+		game->dda.delta_dest.y = INF;
 	else
-		game->dda.delta_dest.y = fabs(1 / ray.y);
+		game->dda.delta_dest.y = fabs(1.0 / ray.y);
+
 	dda_helper(game, ray);
 }
 
 void	dda_loop(t_game *game)
 {
-	int	hit;
+	int	hit = 0;
 
-	hit = 0;
-	while (hit == 0)
+	while (!hit)
 	{
 		if (game->dda.side_dest.x < game->dda.side_dest.y)
 		{
@@ -79,11 +82,13 @@ void	dda_loop(t_game *game)
 			hit = 1;
 	}
 	if (game->dda.side == 0)
-		game->dda.perp_wall_dist = game->dda.side_dest.x - \
-game->dda.delta_dest.x;
+		game->dda.perp_wall_dist =
+			game->dda.side_dest.x - game->dda.delta_dest.x;
 	else
-		game->dda.perp_wall_dist = game->dda.side_dest.y - \
-game->dda.delta_dest.y;
+		game->dda.perp_wall_dist =
+			game->dda.side_dest.y - game->dda.delta_dest.y;
+	if (game->dda.perp_wall_dist < 0.1)
+		game->dda.perp_wall_dist = 0.1;
 }
 
 void	wall_height(t_game *game, int x, t_vec2 ray)
@@ -101,11 +106,11 @@ void	wall_height(t_game *game, int x, t_vec2 ray)
 	if (draw.y >= W_HEIGHT)
 		draw.y = W_HEIGHT - 1;
 	if (game->dda.side == 0)
-		game->text.wall_x = game->player.pos.y + \
-game->dda.perp_wall_dist * ray.y;
+		game->text.wall_x =
+			game->player.pos.y + game->dda.perp_wall_dist * ray.y;
 	else
-		game->text.wall_x = game->player.pos.x + \
-game->dda.perp_wall_dist * ray.x;
+		game->text.wall_x =
+			game->player.pos.x + game->dda.perp_wall_dist * ray.x;
 	game->text.wall_x -= floor(game->text.wall_x);
 	tex = get_right_texture(game, ray);
 	tex_x = textue_x(game, tex, ray);
@@ -124,7 +129,7 @@ void	cast_rays(t_game *game)
 	{
 		camera_x = 2 * x / (double) W_WIDTH - 1;
 		ray = vec_add(game->player.dir, \
-vec_scale(game->player.plane, camera_x));
+		vec_scale(game->player.plane, camera_x));
 		init_dda(game, ray);
 		dda_loop(game);
 		wall_height(game, x, ray);
@@ -133,3 +138,4 @@ vec_scale(game->player.plane, camera_x));
 	minimap(game);
 	mlx_put_image_to_window(game->mlx, game->window, game->minimap.image, 0, 0);
 }
+

@@ -17,6 +17,8 @@ void	put_img(t_image *img, int x, int y, int color)
 {
 	char *pixel;
 
+	if (x < 0 || y < 0 || x >= W_WIDTH || y >= W_HEIGHT)
+		return;
 	pixel = img->buff
 		+ y * img->size_line
 		+ x * (img->bites_per_pixel / 8);
@@ -29,16 +31,16 @@ t_image	*get_right_texture(t_game *game, t_vec2 ray)
 	if (game->dda.side == 0)
 	{
 		if (ray.x > 0)
-			return (&game->textures[WEST]);
-		else
 			return (&game->textures[EAST]);
+		else
+			return (&game->textures[WEST]);
 	}
 	else
 	{
 		if (ray.y > 0)
-			return (&game->textures[NORTH]);
-		else
 			return (&game->textures[SOUTH]);
+		else
+			return (&game->textures[NORTH]);
 	}
 	return (NULL);
 }
@@ -115,4 +117,3 @@ void	init_textures(t_game *game)
 		i++;
 	}
 }
-
