@@ -15,7 +15,7 @@
 int	is_valid_char(char c)
 {
 	return (c == '0' || c == '1' || c == 'N' || c == 'S'
-		|| c == 'E' || c == 'W' || c == ' ');
+		|| c == 'E' || c == 'W');
 }
 
 int	spawn_player(char c)
@@ -23,28 +23,38 @@ int	spawn_player(char c)
 	return (c == 'N' || c == 'S' || c == 'E' || c == 'W');
 }
 
+int is_valid_row(char *line)
+{
+    int i;
+
+    i = 0;
+    while (line[i])
+    {
+        if (line[i] == ' ')
+        {
+            if (i > 0 && is_valid_char(line[i - 1]) && is_valid_char(line[i + 1]))
+                return (print_error("Error -> spaces inside the map\n"), 0);
+        }
+        else if (!is_valid_char(line[i]))
+            return (print_error("Error -> No player at the map\n"), 0);
+        i++;
+    }
+    return (1);
+}
+
 int flood_fill(char **map, int x, int y, int rows, int cols)
 {
     if (x < 0 || y < 0 || x >= rows || y >= cols)
         return (0);
-    if (map[x][y] == '1')
-        return (1);
-    if (map[x][y] == '2')
+    if (map[x][y] == '1' || map[x][y] == '2')
         return (1);
     if (map[x][y] == ' ')
         return (0);
-
-    if (!is_valid_char(map[x][y]))
-        return (0);
-
     map[x][y] = '2';
-	if (!flood_fill(map, x - 1, y, rows, cols)
-		|| !flood_fill(map, x + 1, y, rows, cols)
-		|| !flood_fill(map, x, y - 1, rows, cols)
-		|| !flood_fill(map, x, y + 1, rows, cols))
-    	return (0);
-
-return (1);
+    return (flood_fill(map, x - 1, y, rows, cols)
+        && flood_fill(map, x + 1, y, rows, cols)
+        && flood_fill(map, x, y - 1, rows, cols)
+        && flood_fill(map, x, y + 1, rows, cols));
 }
 
 char **pad_map(char **map, size_t rows, size_t cols)
@@ -56,14 +66,14 @@ char **pad_map(char **map, size_t rows, size_t cols)
     new_map = malloc(sizeof(char *) * (rows + 1));
     if (!new_map)
         return (NULL);
+
     i = 0;
     while (i < rows)
     {
         new_map[i] = malloc(sizeof(char) * (cols + 1));
         if (!new_map[i])
         {
-            size_t temp;
-            temp = i;
+            size_t temp = i;
             while (temp-- > 0)
                 free(new_map[temp]);
             free(new_map);
@@ -82,6 +92,7 @@ char **pad_map(char **map, size_t rows, size_t cols)
         i++;
     }
     new_map[rows] = NULL;
+
     return (new_map);
 }
 
@@ -97,15 +108,19 @@ int map_valid(char **map, t_header *header)
     rows = ft_2d_len(map);
     cols = 0;
     i = 0;
+
     while (i < rows)
     {
+        if (!is_valid_row(map[i]))
+            return (-1);
         if (ft_strlen(map[i]) > cols)
             cols = ft_strlen(map[i]);
         i++;
     }
     new_map = pad_map(map, rows, cols);
     if (!new_map)
-        return (print_error("Error -> Memory allocation failed\n"), -1);
+        return (print_error("Error -> Malloc failed\n"), -1);
+
     player_count = 0;
     i = 0;
     while (i < rows)
@@ -119,7 +134,7 @@ int map_valid(char **map, t_header *header)
                 if (player_count > 1)
                 {
                     free_2d(new_map);
-                    return (print_error("Error -> cant do multiple player spawn\n"), -1);
+                    return (print_error("Error -> more than player found\n"), -1);
                 }
                 header->compass = new_map[i][j];
                 new_map[i][j] = '0';
