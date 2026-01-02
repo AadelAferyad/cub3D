@@ -50,9 +50,9 @@
 # define KEY_DOWN 65364
 
 # define NORTH 0
-# define WEST 1
-# define EAST 2
-# define SOUTH 3
+# define SOUTH 1
+# define WEST 2
+# define EAST 3
 
 typedef struct s_player_info
 {
@@ -115,13 +115,10 @@ void	draw_textured_column(t_game *game, int x, t_vec2 draw, t_image *tex, int te
 void	put_img(t_image *img, int x, int y, int color);
 void	init_textures(t_game *game);
 
-void	ft_destroy(t_game *game);
+int		ft_destroy(t_game *game);
 void	ft_exit(t_game *game);
 void	clear_image(t_game *game);
 
 void	print_error_exit(char *str);
-void	ft_destroy(t_game *game);
-void	ft_exit(t_game *game);
-
 int	key_pressed(int key_code, t_game *game);
 #endif

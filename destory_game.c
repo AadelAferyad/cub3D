@@ -19,7 +19,7 @@ void	print_error_exit(char *str)
 	exit(1);
 }
 
-void	ft_destroy(t_game *game)
+int	ft_destroy(t_game *game)
 {
 	t_image	*text;
 	int		i;
@@ -38,6 +38,7 @@ void	ft_destroy(t_game *game)
 		}
 	}
 	ft_exit(game);
+	return (0);
 }
 
 void	ft_exit(t_game *game)
