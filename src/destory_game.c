@@ -60,6 +60,5 @@ void	ft_exit(t_game *game)
 		mlx_destroy_display(game->mlx);
 		free(game->mlx);
 	}
-	/*free parsed map HERE ---?! */
 	exit(0);
 }

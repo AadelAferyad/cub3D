@@ -26,7 +26,7 @@ void	player_pos(t_game *game)
 		{
 			if (ft_strchr("NEWS", game->map[y][x]))
 			{
-				game->player.pos = vec_init(x, y);
+				game->player.pos = vec_init(x + 0.5, y + 0.5);
 				game->map[y][x] = '0';
 				return ;
 			}
@@ -76,6 +76,7 @@ void	init_game(t_game *game)
 &game->minimap.bites_per_pixel, \
 &game->minimap.size_line, &game->minimap.endian);
 	player_pos(game);
+	init_player_dir(game);
 	init_textures(game);
 	cast_rays(game);
 	mlx_hook(game->window, 2, 3, key_pressed, game);
@@ -85,12 +86,12 @@ void	init_game(t_game *game)
 
 int	main(int ac, char **av)
 {
-	t_game	game;
-    t_header	header;
+	t_game		game;
+	t_header	header;
 
 	if (ac != 2)
 	{
-		write(2, "Usage -> ./cube3d filename.cub\n",31);
+		write(2, "Usage -> ./cube3d filename.cub\n", 31);
 		return (0);
 	}
 	game.info = &header;

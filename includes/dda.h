@@ -18,5 +18,6 @@
 /*void	init_dda(t_game *game);*/
 void	cast_rays(t_game *game);
 void	put_mlx_pixel(t_image *img, int x, int y, int color);
+void	wall_height(t_game *game, int x, t_vec2 ray);
 
 #endif
