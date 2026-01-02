@@ -32,9 +32,10 @@ void	clear_image(t_game *game)
 	while (y < W_HEIGHT)
 	{
 		if (y < W_HEIGHT / 2)
-			color = BLACK;
+			color = game->info->ceiling_color;
 		else
-			color = BLACK;
+			color = game->info->floor_color;
+
 		x = 0;
 		while (x < W_WIDTH)
 		{

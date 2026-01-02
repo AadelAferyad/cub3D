@@ -100,9 +100,13 @@ void	draw_textured_column(
 void	init_textures(t_game *game)
 {
 	int	i;
-	char	*str[4] = {"textures/east_fuhrer.xpm", "textures/north_fuhrer.xpm", "textures/south_fuhrer.xpm", "textures/west_fuhrer.xpm"}; 
-	
+	char	*str[4];
+
 	i = 0;
+	str[0] = game->info->no_path;
+	str[1] = game->info->so_path;
+	str[2] = game->info->we_path;
+	str[3] = game->info->ea_path;
 	while (i < 4)
 	{
 		// TODO check if fails
