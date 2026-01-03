@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef	MACROS_H
+#ifndef MACROS_H
 # define MACROS_H
 
 # define W_WIDTH 900
@@ -23,7 +23,7 @@
 # define INF 1e30
 # define RED 0xFF0000
 # define BLUE 0x0000FF
-# define CEILING 0x00FFFF 
+# define CEILING 0x00FFFF
 # define GREEN 0x008000
 # define YELLOW 0xFFFF00
 # define FLOOR 0x964B00
