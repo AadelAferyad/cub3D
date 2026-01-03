@@ -12,62 +12,81 @@
 
 #include "../includes/parse.h"
 
-
-void flood_fill(char **map, int y, int x, int rows)
+int is_valid_char(char c)
 {
-    if (y < 0 || y >= rows || x < 0) 
-        return;
-    if (x >= (int)ft_strlen(map[y]))
-        return;
-    if (map[y][x] == '1' || map[y][x] == 'V') 
-        return;
-    if (map[y][x] == '0' || map[y][x] == 'N' || map[y][x] == 'E' ||
-        map[y][x] == 'S' || map[y][x] == 'W')
-    {
-        print_error("Error -> invalid map\n");
-        exit(EXIT_FAILURE);
-    }
-    if (map[y][x] == ' ') 
-        return;
-    map[y][x] = 'V';
-    flood_fill(map, y - 1, x, rows);
-    flood_fill(map, y + 1, x, rows);
-    flood_fill(map, y, x - 1, rows);
-    flood_fill(map, y, x + 1, rows);
+    if (c == '1' || c == '0' || c == ' ' || c == 'N' || c == 'E' || c == 'S' || c == 'W')
+        return (1);
+    return (0);
 }
 
-void check_map_enclosure(char **map)
+int validate_first_line(char *line)
 {
-    int rows;
-    int i;
+    size_t i = 0;
 
-    i = 0;
-    rows = 0;
-    while (map[rows])
-        rows++;
-    while (i < rows)
+    while (line[i])
     {
-        if (map[i][0] == ' ' || map[i][0] == '0' || map[i][0] == 'N' || 
-            map[i][0] == 'E' || map[i][0] == 'S' || map[i][0] == 'W')
-            flood_fill(map, i, 0, rows);
-        int len = ft_strlen(map[i]);
-        if (len > 0 && (map[i][len - 1] == ' ' || map[i][len - 1] == '0' ||
-                        map[i][len - 1] == 'N' || map[i][len - 1] == 'E' ||
-                        map[i][len - 1] == 'S' || map[i][len - 1] == 'W'))
-            flood_fill(map, i, len - 1, rows);
+        if (line[i] != '1' && line[i] != ' ')
+            return (print_error("Error -> Map must be surrounded by walls\n"), EXIT_FAILURE);
         i++;
     }
-    i = 0;
-    int max_cols = ft_strlen(map[0]);
-    while (i < max_cols)
-    {
-        if (map[0][i] == ' ' || map[0][i] == '0' || map[0][i] == 'N' || 
-            map[0][i] == 'E' || map[0][i] == 'S' || map[0][i] == 'W')
-            flood_fill(map, 0, i, rows);
-        if (map[rows - 1][i] == ' ' || map[rows - 1][i] == '0' || map[rows - 1][i] == 'N' ||
-            map[rows - 1][i] == 'E' || map[rows - 1][i] == 'S' || map[rows - 1][i] == 'W')
-            flood_fill(map, rows - 1, i, rows);
+    return (EXIT_SUCCESS);
+}
 
+int validate_last_character(char *line, size_t len)
+{
+    while (len > 0 && line[len - 1] == ' ')
+        len--;
+    if (len == 0 || line[len - 1] != '1')
+        return (print_error("Error -> Map must be enclosed by walls\n"), EXIT_FAILURE);
+    return (EXIT_SUCCESS);
+}
+
+int validate_tile(char c, char **map, size_t x, size_t y)
+{
+    if (!is_valid_char(c))
+        return (print_error("Error -> Invalid tile found in map\n"), EXIT_FAILURE);
+    if (c == '0' || ft_strchr("NESW", c))
+    {
+        if (x == 0 || x >= ft_strlen(map[y]) - 1)
+            return (print_error("Error -> Map must be surrounded by walls\n"), EXIT_FAILURE);
+        if (y == 0 || !map[y + 1] || x >= ft_strlen(map[y]) || x >= ft_strlen(map[y + 1]) || 
+            x >= ft_strlen(map[y - 1]) || map[y - 1][x] == ' ' || map[y + 1][x] == ' ' ||
+            map[y][x - 1] == ' ' || map[y][x + 1] == ' ')
+            return (print_error("Error -> Walkable tile is not enclosed\n"), EXIT_FAILURE);
+    }
+    return (EXIT_SUCCESS);
+}
+
+int validate_line(char *line, char **map, size_t y)
+{
+    size_t i;
+
+    if (!line || ft_strlen(line) == 0)
+        return (print_error("Error -> Empty map line detected\n"), EXIT_FAILURE);
+    if (y == 0)
+        return validate_first_line(line);
+    i = 0;
+    while (line[i])
+    {
+        if (validate_tile(line[i], map, i, y) == EXIT_FAILURE)
+            return EXIT_FAILURE;
         i++;
+    }
+    return validate_last_character(line, i);
+}
+
+void validate_map(char **map)
+{
+    size_t y;
+
+    y = 0;
+    while (map[y])
+    {
+        if (validate_line(map[y], map, y) == EXIT_FAILURE)
+        {
+            free_2d(map);
+            exit(EXIT_FAILURE);
+        }
+        y++;
     }
 }

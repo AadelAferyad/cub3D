@@ -149,7 +149,6 @@ char **parse(char *file, t_header *header)
     }
     check_invalid_characters(map);
     check_player(map, header);
-    check_map_enclosure(map);
-
+    validate_map(map);
     return (map);
 }
