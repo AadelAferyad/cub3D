@@ -13,20 +13,27 @@
 #include <parse.h>
 #include <get_next_line.h>
 
-int	is_map_line(char *line)
+int is_map_line(char *line)
 {
-	int	i;
+    int i;
+    int flag;
 
-	i = 0;
-	while (line[i])
-	{
-		if (line[i] != ' ' && line[i] != '1' && line[i] != '0'
-			&& line[i] != 'N' && line[i] != 'S'
-			&& line[i] != 'E' && line[i] != 'W')
-			return (0);
-		i++;
-	}
-	return (1);
+    i = 0;
+    flag = 0;
+    while (line[i] == ' ')
+        i++;
+    while (line[i])
+    {
+        if (line[i] != ' ' && line[i] != '1' && line[i] != '0'
+            && line[i] != 'N' && line[i] != 'S'
+            && line[i] != 'E' && line[i] != 'W')
+            return (0);
+        if (line[i] == '1' || line[i] == '0' || line[i] == 'N' ||
+            line[i] == 'S' || line[i] == 'E' || line[i] == 'W')
+            flag = 1;
+        i++;
+    }
+    return (flag);
 }
 
 void check_player(char **map, t_header *header)
@@ -92,9 +99,11 @@ char **parse(char *file, t_header *header)
     char    *buff;
     char    **lines;
     char    **map;
-    int     lines_start = -1;
-    int     i = -1;
+    int     lines_start;
+    int     i;
 
+    lines_start = -1;
+    i = -1;
     ft_bzero(header, sizeof(t_header));
     header->floor_color = -1;
     header->ceiling_color = -1;
@@ -147,7 +156,6 @@ char **parse(char *file, t_header *header)
     }
     check_invalid_characters(map);
     check_player(map, header);
-    check_map_enclosure(map);
-
+    validate_map(map);
     return (map);
 }

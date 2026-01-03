@@ -39,7 +39,7 @@ char	**parse(char *file, t_header *header);
 
 char	*check_file(char *file);
 int		config_valid(char **lines, t_header *header);
-void	check_map_enclosure(char **map);
+void validate_map(char **map);
 
 size_t	ft_2d_len(char **arr);
 char	**ft_2d_dup(char **src);

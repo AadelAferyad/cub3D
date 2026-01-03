@@ -102,13 +102,14 @@ int config_valid(char **lines, t_header *header)
 
     while (lines[i])
     {
-        if (lines[i][0] == '\0')
+        char *line = lines[i];
+        while (*line == ' ')
+            line++;
+        if (*line == '\0')
         {
             i++;
             continue;
         }
-        char *line = lines[i];
-        while (*line == ' ') line++;
         if (is_map_line(line))
             break;
         if (!ft_strncmp(line, "NO ", 3))
@@ -136,5 +137,6 @@ int config_valid(char **lines, t_header *header)
     if (!header->no_path || !header->so_path || !header->we_path || !header->ea_path ||
         header->floor_color == -1 || header->ceiling_color == -1)
         return (print_error("Error -> Invalid config element\n"), -1);
+
     return (i);
 }

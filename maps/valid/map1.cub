@@ -1,13 +1,26 @@
-NO textures/north_fuhrer.xpm
-SO textures/south_fuhrer.xpm
-WE textures/west_fuhrer.xpm
-EA textures/east_fuhrer.xpm
+   NO  textures/north.xpm
+SO          textures/south.xpm
+         WE textures/west.xpm       
+EA textures/east.xpm
+  
+    
 
-F 42,42,42
-C 200,30,0
+
+  F     42,42,42  
+C   200,30,0
 
         1111111
-        1000001
-11111111100 001
-10000000000E         1
+       11000010111111111
+11111110000011111111111
+10000000000001111111111
+111111111111111
+111
+1E1
+111111111111111
+111111111111111
+111111111111111
+111101111111111
+111111111111111
+111111111111111
+111111111111111
 111111111111111
