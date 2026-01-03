@@ -90,6 +90,6 @@ int		ft_destroy(t_game *game);
 void	ft_exit(t_game *game);
 void	clear_image(t_game *game);
 
-void	print_error_exit(char *str);
+void	print_error_exit(t_game *game, char *str);
 int	key_pressed(int key_code, t_game *game);
 #endif

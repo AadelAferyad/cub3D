@@ -34,30 +34,14 @@ vec_scale(dir, speed));
 
 void	moving_player_position(t_game *game, int key_code)
 {
-	t_vec2	vec;
-
 	if (key_code == UP)
-	{
-		vec_copy(&vec, game->player.dir);
-		moving_player_position_helper(game, vec, MOVE_SPEED);
-	}
+		moving_player_position_helper(game, game->player.dir, MOVE_SPEED);
 	else if (key_code == DOWN)
-	{
-		vec_copy(&vec, game->player.dir);
-		moving_player_position_helper(game, vec, -MOVE_SPEED);
-	}
+		moving_player_position_helper(game, game->player.dir, -MOVE_SPEED);
 	else if (key_code == RIGHT)
-	{
-		vec.x =  game->player.dir.y;
-		vec.y = -game->player.dir.x;
-		moving_player_position_helper(game, vec, MOVE_SPEED);
-	}
+		moving_player_position_helper(game, game->player.plane, MOVE_SPEED);
 	else if (key_code == LEFT)
-	{
-		vec.x = -game->player.dir.y;
-		vec.y =  game->player.dir.x;
-		moving_player_position_helper(game, vec, MOVE_SPEED);
-	}
+		moving_player_position_helper(game, game->player.plane, -MOVE_SPEED);
 }
 
 int	key_pressed(int key_code, t_game *game)
@@ -66,9 +50,9 @@ int	key_pressed(int key_code, t_game *game)
 		ft_destroy(game);
 	moving_player_position(game, key_code);
 	if (key_code == KEY_LEFT)
-		dir_rotation(game, ROTATION);
-	else if (key_code == KEY_RIGHT)
 		dir_rotation(game, -ROTATION);
+	else if (key_code == KEY_RIGHT)
+		dir_rotation(game, ROTATION);
 	cast_rays(game);
 	return (0);
 }

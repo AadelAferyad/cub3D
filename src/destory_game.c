@@ -12,10 +12,15 @@
 
 #include <cub3d.h>
 
-void	print_error_exit(char *str)
+void	print_error_exit(t_game *game, char *str)
 {
 	if (str)
 		printf("%s\n", str);
+	free_2d(game->map);
+	free(game->info->so_path);
+	free(game->info->no_path);
+	free(game->info->ea_path);
+	free(game->info->we_path);
 	exit(1);
 }
 
@@ -55,6 +60,5 @@ void	ft_exit(t_game *game)
 		mlx_destroy_display(game->mlx);
 		free(game->mlx);
 	}
-	/*free parsed map HERE ---?! */
 	exit(0);
 }
