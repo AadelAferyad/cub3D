@@ -10,93 +10,95 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/parse.h"
 #include "../includes/get_next_line.h"
+#include "../includes/parse.h"
 
-int check_ext(char *file)
+int	check_ext(char *file)
 {
-    int len;
+	int	len;
 
-    if (!file)
-    {
-        print_error("Error -> No file provided\n");
-        return (-1);
-    }
-    len = ft_strlen(file);
-    if (len < 4 || ft_strncmp(file + len - 4, ".cub", 4) != 0)
-    {
-        print_error("Error -> Invalid file extension\n");
-        return (-1);
-    }
-    return (0);
+	if (!file)
+	{
+		print_error("Error -> No file provided\n");
+		return (-1);
+	}
+	len = ft_strlen(file);
+	if (len < 4 || ft_strncmp(file + len - 4, ".cub", 4) != 0)
+	{
+		print_error("Error -> Invalid file extension\n");
+		return (-1);
+	}
+	return (0);
 }
 
-int open_file(char *file)
+int	open_file(char *file)
 {
-    int fd;
-    char buffer[1];
-    int read_buff;
+	int		fd;
+	char	buffer[1];
+	int		read_buff;
 
-    fd = open(file, O_RDONLY);
-    if (fd < 0)
-    {
-        print_error("Error -> opening file\n");
-        return (-1);
-    }
-    read_buff = read(fd, buffer, 1);
-    if (read_buff <= 0)
-    {
-        print_error("Error -> File is empty\n");
-        close(fd);
-        return (-1);
-    }
-    close(fd);
-    fd = open(file, O_RDONLY);
-    return (fd);
+	fd = open(file, O_RDONLY);
+	if (fd < 0)
+	{
+		print_error("Error -> opening file\n");
+		return (-1);
+	}
+	read_buff = read(fd, buffer, 1);
+	if (read_buff <= 0)
+	{
+		print_error("Error -> File is empty\n");
+		close(fd);
+		return (-1);
+	}
+	close(fd);
+	fd = open(file, O_RDONLY);
+	return (fd);
 }
 
-char *read_file(int fd)
+char	*read_file(int fd)
 {
-    char *line;
-    char *buffer;
+	char	*line;
+	char	*buffer;
 
-    buffer = NULL;
-    while ((line = get_next_line(fd)) != NULL)
-    {
-        buffer = ft_strjoin_gnl(buffer, line);
-        free(line);
-        if (!buffer)
-        {
-            print_error("Error -> Memory failed\n");
-            return (NULL);
-        }
-    }
-    return (buffer);
+	buffer = NULL;
+	line = get_next_line(fd);
+	while (line != NULL)
+	{
+		buffer = ft_strjoin_gnl(buffer, line);
+		free(line);
+		if (!buffer)
+		{
+			print_error("Error -> Memory failed\n");
+			return (NULL);
+		}
+		line = get_next_line(fd);
+	}
+	return (buffer);
 }
 
-char *check_file(char *file)
+char	*check_file(char *file)
 {
-    int fd;
-    char *buffer;
+	int		fd;
+	char	*buffer;
 
-    if (check_ext(file) < 0)
-    {
-        print_error("Error -> Invalid file extension\n");
-        return (NULL);
-    }
-    fd = open_file(file);
-    if (fd < 0)
-    {
-        print_error("Error -> File cannot be opened or is unreadable\n");
-        return (NULL);
-    }
-    buffer = read_file(fd);
-    if (!buffer)
-    {
-        print_error("Error -> Failed to read file contents\n");
-        close(fd);
-        return (NULL);
-    }
-    close(fd);
-    return (buffer);
+	if (check_ext(file) < 0)
+	{
+		print_error("Error -> Invalid file extension\n");
+		return (NULL);
+	}
+	fd = open_file(file);
+	if (fd < 0)
+	{
+		print_error("Error -> File cannot be opened or is unreadable\n");
+		return (NULL);
+	}
+	buffer = read_file(fd);
+	if (!buffer)
+	{
+		print_error("Error -> Failed to read file contents\n");
+		close(fd);
+		return (NULL);
+	}
+	close(fd);
+	return (buffer);
 }
