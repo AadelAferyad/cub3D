@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/parse.h"
+#include <parse.h>
 
 int	check_lines(char *line)
 {
@@ -50,7 +50,7 @@ void	check_player(char **map, t_header *header)
 			if (ft_strchr("NESW", map[i][j]))
 			{
 				if (player_found)
-					throw_exit(map, "Error -> Duplicate player found\n");
+					throw_exit(map, "Error\n -> Duplicate player found\n");
 				header->compass = map[i][j];
 				player_found = 1;
 			}
@@ -59,7 +59,7 @@ void	check_player(char **map, t_header *header)
 		i++;
 	}
 	if (!player_found)
-		throw_exit(map, "Error -> No player found\n");
+		throw_exit(map, "Error\n -> No player found\n");
 }
 
 void	check_chars(char **map)
@@ -74,7 +74,7 @@ void	check_chars(char **map)
 		while (map[i][j])
 		{
 			if (!ft_strchr(" 10NESW", map[i][j]))
-				throw_exit(map, "Error -> Invalid character\n");
+				throw_exit(map, "Error\n -> Invalid character\n");
 			j++;
 		}
 		i++;

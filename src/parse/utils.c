@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/parse.h"
+#include <parse.h>
 
 size_t	ft_2d_len(char **arr)
 {

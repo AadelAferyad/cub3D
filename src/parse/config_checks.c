@@ -10,14 +10,14 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/parse.h"
+#include <parse.h>
 
 int	check_rgb_char(const char *line, int i)
 {
 	if (line[i] == ' ')
-		return (print_error("Error -> invalid RGB format\n"), -1);
+		return (print_error("Error\n -> invalid RGB format\n"), -1);
 	else if (line[i] < '0' || line[i] > '9')
-		return (print_error("Error -> Invalid RGB format\n"), -1);
+		return (print_error("Error\n -> Invalid RGB format\n"), -1);
 	return (0);
 }
 
@@ -36,7 +36,7 @@ int	check_header(char *line, t_header *header)
 	else if (!ft_strncmp(line, "C ", 2))
 		return (check_rgb(line + 2, &header->ceiling_color));
 	else
-		return (print_error("Error -> Invalid config line\n"), -1);
+		return (print_error("Error\n -> Invalid config line\n"), -1);
 }
 
 int	is_map_line(char *line)

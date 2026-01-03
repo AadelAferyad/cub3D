@@ -10,14 +10,12 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/parse.h"
-
-// #pragma GCC diagnostic ignored "-Wunused-variable"
+#include <parse.h>
 
 void	check_data(char **map, t_header *header)
 {
 	if (!map || !map[0])
-		throw_exit(map, "Error -> Map is empty or invalid\n");
+		throw_exit(map, "Error\n -> Map is empty or invalid\n");
 	check_chars(map);
 	check_player(map, header);
 	validate_map(map);
@@ -33,7 +31,7 @@ char	**get_map(char **lines, int i)
 			return (ft_2d_dup(&lines[i]));
 	}
 	free_2d(lines);
-	print_error("Error -> No map found in the file\n");
+	print_error("Error\n -> No map found in the file\n");
 	exit(EXIT_FAILURE);
 }
 
@@ -52,7 +50,7 @@ char	*parse_file(char *file)
 	buff = check_file(file);
 	if (!buff)
 	{
-		print_error("Error -> Failed to read the file\n");
+		print_error("Error\n -> Failed to read the file\n");
 		exit(EXIT_FAILURE);
 	}
 	return (buff);
@@ -70,16 +68,17 @@ char	**parse(char *file, t_header *header)
 	free(buff);
 	if (!lines)
 	{
-		print_error("Error -> Unable to process file content\n");
+		print_error("Error\n -> Unable to process file content\n");
 		exit(EXIT_FAILURE);
 	}
 	if (config_valid(lines, header) < 0)
 	{
 		free_2d(lines);
-		print_error("Error -> Invalid configuration in .cub file\n");
+		print_error("Error\n -> Invalid configuration in .cub file\n");
 		exit(EXIT_FAILURE);
 	}
 	map = get_map(lines, -1);
+	free_2d(lines);
 	check_data(map, header);
 	return (map);
 }

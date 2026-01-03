@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parse.h"
+#include <parse.h>
 
 int	is_valid_char(char c)
 {
@@ -28,7 +28,7 @@ int	check_first_line(char *line)
 	while (line[i])
 	{
 		if (line[i] != '1' && line[i] != ' ')
-			return (print_error("Error -> Map must be surrounded by walls\n"),
+			return (print_error("Error\n -> Map must be surrounded by walls\n"),
 				EXIT_FAILURE);
 		i++;
 	}
@@ -40,7 +40,7 @@ int	check_last_character(char *line, size_t len)
 	while (len > 0 && line[len - 1] == ' ')
 		len--;
 	if (len == 0 || line[len - 1] != '1')
-		return (print_error("Error -> Map must be enclosed by walls\n"),
+		return (print_error("Error\n -> Map must be enclosed by walls\n"),
 			EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }

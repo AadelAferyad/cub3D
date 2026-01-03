@@ -10,18 +10,18 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/parse.h"
+#include <parse.h>
 
 int	check_around(char **map, size_t x, size_t y)
 {
 	if (x == 0 || x >= ft_strlen(map[y]) - 1)
-		return (print_error("Error -> Map must be surrounded by walls\n"),
+		return (print_error("Error\n -> Map must be surrounded by walls\n"),
 			EXIT_FAILURE);
 	if (y == 0 || !map[y + 1] || x >= ft_strlen(map[y])
 		|| x >= ft_strlen(map[y + 1]) || x >= ft_strlen(map[y - 1])
 		|| map[y - 1][x] == ' ' || map[y + 1][x] == ' '
 		|| map[y][x - 1] == ' ' || map[y][x + 1] == ' ')
-		return (print_error("Error -> Walkable tile is not enclosed\n"),
+		return (print_error("Error\n -> Walkable tile is not enclosed\n"),
 			EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }
@@ -29,7 +29,7 @@ int	check_around(char **map, size_t x, size_t y)
 int	check_tile(char c, char **map, size_t x, size_t y)
 {
 	if (!is_valid_char(c))
-		return (print_error("Error -> Invalid tile found in map\n"),
+		return (print_error("Error\n -> Invalid tile found in map\n"),
 			EXIT_FAILURE);
 	if (c == '0' || ft_strchr("NESW", c))
 	{
@@ -44,7 +44,7 @@ int	check_line(char *line, char **map, size_t y)
 	size_t	i;
 
 	if (!line || ft_strlen(line) == 0)
-		return (print_error("Error -> Empty map line detected\n"),
+		return (print_error("Error\n -> Empty map line detected\n"),
 			EXIT_FAILURE);
 	if (y == 0)
 		return (check_first_line(line));

@@ -12,6 +12,7 @@
 
 #include <cub3d.h>
 #include <dda.h>
+#include <parse.h>
 
 void	player_pos(t_game *game)
 {
@@ -91,7 +92,7 @@ int	main(int ac, char **av)
 
 	if (ac != 2)
 	{
-		write(2, "Usage -> ./cube3d filename.cub\n", 31);
+		write(2, "Usage\n -> ./cube3d filename.cub\n", 31);
 		return (0);
 	}
 	game.info = &header;
