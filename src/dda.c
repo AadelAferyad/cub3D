@@ -68,29 +68,36 @@ game->dda.side_dest.y - game->dda.delta_dest.y;
 		game->dda.perp_wall_dist = 0.1;
 }
 
-void	dda_loop(t_game *game)
+void dda_loop(t_game *game)
 {
-	int	hit;
+    int hit;
 
-	hit = 0;
-	while (!hit)
-	{
-		if (game->dda.side_dest.x < game->dda.side_dest.y)
-		{
-			game->dda.side_dest.x += game->dda.delta_dest.x;
-			game->dda.map.x += game->dda.step.x;
-			game->dda.side = 0;
-		}
-		else
-		{
-			game->dda.side_dest.y += game->dda.delta_dest.y;
-			game->dda.map.y += game->dda.step.y;
-			game->dda.side = 1;
-		}
-		if (game->map[(int) game->dda.map.y][(int) game->dda.map.x] == '1')
-			hit = 1;
-	}
-	dda_loop_helper(game);
+    hit = 0;
+    while (!hit)
+    {
+        if (game->dda.side_dest.x < game->dda.side_dest.y)
+        {
+            game->dda.side_dest.x += game->dda.delta_dest.x;
+            game->dda.map.x += game->dda.step.x;
+            game->dda.side = 0;
+        }
+        else
+        {
+            game->dda.side_dest.y += game->dda.delta_dest.y;
+            game->dda.map.y += game->dda.step.y;
+            game->dda.side = 1;
+        }
+        if (game->dda.map.y < 0 || game->dda.map.y >= ft_2d_len(game->map) || 
+            game->dda.map.x < 0 || game->dda.map.x >= (int)ft_strlen(game->map[(int)game->dda.map.y]))
+        {
+            print_error("Error -> Rays out of bounds\n");
+            exit(EXIT_FAILURE);
+        }
+
+        if (game->map[(int)game->dda.map.y][(int)game->dda.map.x] == '1')
+            hit = 1;
+    }
+    dda_loop_helper(game);
 }
 
 void	cast_rays(t_game *game)

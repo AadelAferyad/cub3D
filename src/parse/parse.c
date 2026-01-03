@@ -92,9 +92,11 @@ char **parse(char *file, t_header *header)
     char    *buff;
     char    **lines;
     char    **map;
-    int     lines_start = -1;
-    int     i = -1;
+    int     lines_start;
+    int     i;
 
+    lines_start = -1;
+    i = -1;
     ft_bzero(header, sizeof(t_header));
     header->floor_color = -1;
     header->ceiling_color = -1;
