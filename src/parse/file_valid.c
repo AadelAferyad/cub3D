@@ -67,7 +67,7 @@ char *read_file(int fd)
         free(line);
         if (!buffer)
         {
-            print_error("Error -> Memory allocation failure in reading file\n");
+            print_error("Error -> Memory failed\n");
             return (NULL);
         }
     }

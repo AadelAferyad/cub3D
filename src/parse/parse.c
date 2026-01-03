@@ -29,32 +29,98 @@ int	is_map_line(char *line)
 	return (1);
 }
 
+void check_player(char **map, t_header *header)
+{
+    int i, j;
+    int player_found = 0;
+
+    i = 0;
+    while (map[i])
+    {
+        j = 0;
+        while (map[i][j])
+        {
+            if (map[i][j] == 'N' || map[i][j] == 'E' || map[i][j] == 'S' || map[i][j] == 'W')
+            {
+                if (player_found)
+                {
+                    print_error("Error -> Duplicate player found\n");
+                    free_2d(map);
+                    exit(EXIT_FAILURE);
+                }
+                header->compass = map[i][j];
+                player_found = 1;
+            }
+            j++;
+        }
+        i++;
+    }
+    if (!player_found)
+    {
+        print_error("Error -> No player found\n");
+        free_2d(map);
+        exit(EXIT_FAILURE);
+    }
+}
+
+void check_invalid_characters(char **map)
+{
+    int i, j;
+
+    i = 0;
+    while (map[i])
+    {
+        j = 0;
+        while (map[i][j])
+        {
+            if (map[i][j] != ' ' && map[i][j] != '1' && map[i][j] != '0'
+                && map[i][j] != 'N' && map[i][j] != 'E'
+                && map[i][j] != 'S' && map[i][j] != 'W')
+            {
+                print_error("Error -> Invalid character\n");
+                free_2d(map);
+                exit(EXIT_FAILURE);
+            }
+            j++;
+        }
+        i++;
+    }
+}
+
 char **parse(char *file, t_header *header)
 {
     char    *buff;
     char    **lines;
     char    **map;
-    int     lines_start;
-    int     i;
+    int     lines_start = -1;
+    int     i = -1;
 
     ft_bzero(header, sizeof(t_header));
     header->floor_color = -1;
     header->ceiling_color = -1;
-	header->compass = '\0';
+    header->compass = '\0';
     map = NULL;
 
     buff = check_file(file);
     if (!buff)
+    {
+        print_error("Error -> Failed to read the file\n");
         exit(EXIT_FAILURE);
+    }
+
     lines = ft_split(buff, '\n');
     free(buff);
+    if (!lines)
+    {
+        print_error("Error -> Unable to process file content\n");
+        exit(EXIT_FAILURE);
+    }
     if (config_valid(lines, header) < 0)
     {
         free_2d(lines);
+        print_error("Error -> Invalid configuration in .cub file\n");
         exit(EXIT_FAILURE);
     }
-    lines_start = -1;
-    i = -1;
     while (lines[++i])
     {
         if (ft_strlen(lines[i]) == 0)
@@ -65,13 +131,23 @@ char **parse(char *file, t_header *header)
             break;
         }
     }
-    if (lines_start != -1)
-        map = ft_2d_dup(&lines[lines_start]);
+    if (lines_start == -1)
+    {
+        free_2d(lines);
+        print_error("Error -> No map found in the file\n");
+        exit(EXIT_FAILURE);
+    }
+    map = ft_2d_dup(&lines[lines_start]);
     free_2d(lines);
-    if (!map || map_valid(map, header) < 0)
+    if (!map || !map[0])
     {
         free_2d(map);
+        print_error("Error -> Map is empty or invalid\n");
         exit(EXIT_FAILURE);
-	}
+    }
+    check_invalid_characters(map);
+    check_player(map, header);
+    check_map_enclosure(map);
+
     return (map);
 }
