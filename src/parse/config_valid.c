@@ -125,7 +125,7 @@ int	config_valid(char **lines, t_header *header)
 		if (is_map_line(line))
 			break ;
 		if (check_header(line, header) < 0)
-			return (-1);
+			return (free_path(header, 0), -1);
 		i++;
 	}
 	if (!header->no_path || !header->so_path || !header->we_path
