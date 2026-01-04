@@ -20,11 +20,12 @@ int	check_texture_path(char *line, char **path)
 	buffer = ft_strtrim(line, " ");
 	if (!buffer || !*buffer)
 		return (print_error("Error\n -> Invalid texture path\n"), -1);
-	if (!ft_strrchr(buffer, '.')
-		|| ft_strncmp(ft_strrchr(buffer, '.'), ".xpm", 4) != 0)
+	if (!ft_strrchr(buffer, '.') || ft_strncmp(ft_strrchr(buffer, '.'), ".xpm",
+			4) != 0)
 	{
 		free(buffer);
-		return (print_error("Error\n -> Texture file must end with .xpm\n"), -1);
+		return (print_error("Error\n -> Texture file must end with .xpm\n"),
+			-1);
 	}
 	fd = open(buffer, O_RDONLY);
 	if (fd < 0)
@@ -34,7 +35,6 @@ int	check_texture_path(char *line, char **path)
 	}
 	close(fd);
 	*path = buffer;
-	free(buffer);
 	return (0);
 }
 
@@ -79,15 +79,30 @@ int	check_rgb(char *line, int *color)
 	free(line);
 	if (!rgb || ft_2d_len(rgb) != 3 || !*rgb[0] || !*rgb[1] || !*rgb[2])
 		return (free_2d(rgb),
-			print_error("Error\n -> RGB must have three values\n"), -1);
+			print_error("Error\n -> RGB must have three values\n"),
+			-1);
 	r = ft_atoi(rgb[0]);
 	g = ft_atoi(rgb[1]);
 	b = ft_atoi(rgb[2]);
 	free_2d(rgb);
 	if (r < 0 || r > 255 || g < 0 || g > 255 || b < 0 || b > 255)
-		return (print_error("Error\n -> RGB values must be between 0-255\n"), -1);
+		return (print_error("Error\n -> RGB values must be between 0-255\n"),
+			-1);
 	*color = (r * 65536) + (g * 256) + b;
 	return (0);
+}
+
+void	free_path(t_header *header)
+{
+	if (header->no_path)
+		free(header->no_path);
+	if (header->so_path)
+		free(header->so_path);
+	if (header->we_path)
+		free(header->we_path);
+	if (header->ea_path)
+		free(header->ea_path);
+	print_error("Error\n -> Invalid config element\n");
 }
 
 int	config_valid(char **lines, t_header *header)
@@ -115,6 +130,6 @@ int	config_valid(char **lines, t_header *header)
 	if (!header->no_path || !header->so_path || !header->we_path
 		|| !header->ea_path || header->floor_color == -1
 		|| header->ceiling_color == -1)
-		return (print_error("Error\n -> Invalid config element\n"), -1);
+		return (free_path(header), -1);
 	return (i);
 }
