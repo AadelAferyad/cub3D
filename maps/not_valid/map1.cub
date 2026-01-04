@@ -3,7 +3,7 @@ SO textures/south_fuhrer.xpm
 WE textures/west_fuhrer.xpm
 EA textures/east_fuhrer.xpm
 
-F 220,100,-42
+    F 220,100,42
 C 225,30,0
 
 111111

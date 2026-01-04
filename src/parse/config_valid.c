@@ -34,6 +34,7 @@ int	check_texture_path(char *line, char **path)
 	}
 	close(fd);
 	*path = buffer;
+	free(buffer);
 	return (0);
 }
 
