@@ -40,7 +40,7 @@ char		**parse(char *file, t_header *header);
 
 char		*check_file(char *file);
 int			config_valid(char **lines, t_header *header);
-void		validate_map(char **map);
+void		validate_map(char **map, t_header *header);
 
 int			is_valid_char(char c);
 int			is_map_line(char *line);
@@ -52,11 +52,12 @@ int			check_texture_path(char *line, char **path);
 int			check_header(char *line, t_header *header);
 int			check_lines(char *line);
 void		check_player(char **map, t_header *header);
-void		check_chars(char **map);
+void		check_chars(char **map, t_header *header);
 
 size_t		ft_2d_len(char **arr);
 char		**ft_2d_dup(char **src);
 void		free_2d(char **arr);
+void		free_path(t_header *header, int flag);
 
 void		print_error(char *str);
 void		throw_exit(char **map, char *message);

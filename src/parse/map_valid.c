@@ -58,7 +58,7 @@ int	check_line(char *line, char **map, size_t y)
 	return (check_last_character(line, i));
 }
 
-void	validate_map(char **map)
+void	validate_map(char **map, t_header *header)
 {
 	size_t	y;
 
@@ -67,6 +67,7 @@ void	validate_map(char **map)
 	{
 		if (check_line(map[y], map, y) == EXIT_FAILURE)
 		{
+			free_path(header, 0);
 			free_2d(map);
 			exit(EXIT_FAILURE);
 		}

@@ -34,35 +34,48 @@ int	check_lines(char *line)
 	return (flag);
 }
 
+void	check_duplicate_player(char **map, t_header *header)
+{
+	free_path(header, 0);
+	throw_exit(map, "Error\n -> Duplicate player found\n");
+}
+
+void	check_player_position(char tile, int *player_found, char *compass)
+{
+	*compass = tile;
+	*player_found = 1;
+}
+
 void	check_player(char **map, t_header *header)
 {
 	int	i;
 	int	j;
 	int	player_found;
 
-	i = 0;
+	i = -1;
 	player_found = 0;
-	while (map[i])
+	while (map[++i])
 	{
-		j = 0;
-		while (map[i][j])
+		j = -1;
+		while (map[i][++j])
 		{
 			if (ft_strchr("NESW", map[i][j]))
 			{
 				if (player_found)
-					throw_exit(map, "Error\n -> Duplicate player found\n");
-				header->compass = map[i][j];
-				player_found = 1;
+					check_duplicate_player(map, header);
+				check_player_position(map[i][j],
+					&player_found, &header->compass);
 			}
-			j++;
 		}
-		i++;
 	}
 	if (!player_found)
+	{
+		free_path(header, 0);
 		throw_exit(map, "Error\n -> No player found\n");
+	}
 }
 
-void	check_chars(char **map)
+void	check_chars(char **map, t_header *header)
 {
 	int	i;
 	int	j;
@@ -74,7 +87,10 @@ void	check_chars(char **map)
 		while (map[i][j])
 		{
 			if (!ft_strchr(" 10NESW", map[i][j]))
+			{
+				free_path(header, 0);
 				throw_exit(map, "Error\n -> Invalid character\n");
+			}
 			j++;
 		}
 		i++;

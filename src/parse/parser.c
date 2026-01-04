@@ -16,9 +16,9 @@ void	check_data(char **map, t_header *header)
 {
 	if (!map || !map[0])
 		throw_exit(map, "Error\n -> Map is empty or invalid\n");
-	check_chars(map);
+	check_chars(map, header);
 	check_player(map, header);
-	validate_map(map);
+	validate_map(map, header);
 }
 
 char	**get_map(char **lines, int i)
@@ -78,7 +78,7 @@ char	**parse(char *file, t_header *header)
 		exit(EXIT_FAILURE);
 	}
 	map = get_map(lines, -1);
-	check_data(map, header);
 	free_2d(lines);
+	check_data(map, header);
 	return (map);
 }

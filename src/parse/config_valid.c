@@ -92,7 +92,7 @@ int	check_rgb(char *line, int *color)
 	return (0);
 }
 
-void	free_path(t_header *header)
+void	free_path(t_header *header, int flag)
 {
 	if (header->no_path)
 		free(header->no_path);
@@ -102,7 +102,8 @@ void	free_path(t_header *header)
 		free(header->we_path);
 	if (header->ea_path)
 		free(header->ea_path);
-	print_error("Error\n -> Invalid config element\n");
+	if (flag == 1)
+		print_error("Error\n -> Invalid config element\n");
 }
 
 int	config_valid(char **lines, t_header *header)
@@ -130,6 +131,6 @@ int	config_valid(char **lines, t_header *header)
 	if (!header->no_path || !header->so_path || !header->we_path
 		|| !header->ea_path || header->floor_color == -1
 		|| header->ceiling_color == -1)
-		return (free_path(header), -1);
+		return (free_path(header, 1), -1);
 	return (i);
 }

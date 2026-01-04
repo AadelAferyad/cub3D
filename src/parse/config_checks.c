@@ -36,7 +36,8 @@ int	check_header(char *line, t_header *header)
 	else if (!ft_strncmp(line, "C ", 2))
 		return (check_rgb(line + 2, &header->ceiling_color));
 	else
-		return (print_error("Error\n -> Invalid config line\n"), -1);
+		return (print_error("Error\n -> Invalid config line\n"),
+			free_path(header, 0), -1);
 }
 
 int	is_map_line(char *line)
