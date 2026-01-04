@@ -47,18 +47,16 @@ void	clear_image(t_game *game)
 
 void	wall_height(t_game *game, int x, t_vec2 ray)
 {
-	int		line_height;
-	t_vec2	draw;
 	t_image	*tex;
-	int		tex_x;
+	t_args	draw_arg;
 
-	line_height = (int)(W_HEIGHT / game->dda.perp_wall_dist);
-	draw.x = -line_height / 2 + W_HEIGHT / 2;
-	if (draw.x < 0)
-		draw.x = 0;
-	draw.y = line_height / 2 + W_HEIGHT / 2;
-	if (draw.y >= W_HEIGHT)
-		draw.y = W_HEIGHT - 1;
+	draw_arg.line_height = (int)(W_HEIGHT / game->dda.perp_wall_dist);
+	draw_arg.draw.x = -draw_arg.line_height / 2 + W_HEIGHT / 2;
+	if (draw_arg.draw.x < 0)
+		draw_arg.draw.x = 0;
+	draw_arg.draw.y = draw_arg.line_height / 2 + W_HEIGHT / 2;
+	if (draw_arg.draw.y >= W_HEIGHT)
+		draw_arg.draw.y = W_HEIGHT - 1;
 	if (game->dda.side == 0)
 		game->text.wall_x = \
 game->player.pos.y + game->dda.perp_wall_dist * ray.y;
@@ -67,6 +65,6 @@ game->player.pos.y + game->dda.perp_wall_dist * ray.y;
 game->player.pos.x + game->dda.perp_wall_dist * ray.x;
 	game->text.wall_x -= floor(game->text.wall_x);
 	tex = get_right_texture(game, ray);
-	tex_x = textue_x(game, tex, ray);
-	draw_textured_column(game, x, draw, tex, tex_x, line_height);
+	draw_arg.tex_x = textue_x(game, tex, ray);
+	draw_textured_column(game, x, tex, draw_arg);
 }

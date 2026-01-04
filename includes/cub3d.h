@@ -74,14 +74,21 @@ typedef struct s_game_struct
 
 }				t_game;
 
+typedef struct s_draw_args
+{
+	t_vec2		draw;
+	int			tex_x;
+	int			line_height;
+	int			color;
+	int			tex_y;
+}				t_args;
+
 void			minimap(t_game *game);
 void			init_textures(t_game *game);
-void			draw_texures(t_game *game, void *img, int x, int draw_start,
-					int draw_end);
 t_image			*get_right_texture(t_game *game, t_vec2 ray);
 int				textue_x(t_game *game, t_image *tex, t_vec2 ray);
-void			draw_textured_column(t_game *game, int x, t_vec2 draw,
-					t_image *tex, int tex_x, int line_height);
+void			draw_textured_column(t_game *game, int x, \
+t_image *tex, t_args draw_arg);
 void			put_img(t_image *img, int x, int y, int color);
 void			init_textures(t_game *game);
 
