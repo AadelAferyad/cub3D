@@ -80,5 +80,6 @@ char	**parse(char *file, t_header *header)
 	map = get_map(lines, -1);
 	free_2d(lines);
 	check_data(map, header);
+	free_2d(lines);
 	return (map);
 }
